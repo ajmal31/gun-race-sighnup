@@ -1,3 +1,5 @@
+
+
 /***
  Theme Name: Evara
  Theme URI: http://wp.alithemes.com/html/Evara
@@ -43,6 +45,10 @@ TABLE CONTENT
 @import url(plugins/slick.css);
 @import url(plugins/perfect-scrollbar.css);
 /*RESET*/
+/* *{
+  background-color:#101111!important;
+  color:white!important ;
+} */
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -67,6 +73,7 @@ time, mark, audio, video {
 thead {
   font-weight: 600;
 }
+
 
 article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
@@ -351,7 +358,7 @@ input[type=number]:focus,
 }
 
 .bg-1 {
-  background-color: #fddde4 !important;
+  background-color:  #d77f7a!important;
 }
 
 .bg-2 {
@@ -455,9 +462,13 @@ input[type=number]:focus,
   border-color: #f7f8f9;
 }
 
-.section-border {
+/* .section-border {
   border-top: 1px solid #e6e9ec;
   border-bottom: 1px solid #e6e9ec;
+} */
+.section-border {
+  border-top: 1px solid #b79906;
+  border-bottom: 1px solid #b79906;
 }
 
 .border-color-1 {
@@ -1644,6 +1655,7 @@ label {
 }
 
 .single-animation-wrap.slick-active .slider-animated-1 .single-slider-img img {
+  
   -webkit-animation-delay: 1.5s;
   animation-delay: 1.5s;
   -webkit-animation-name: fadeInUp;
@@ -1667,6 +1679,7 @@ label {
 }
 
 .hero-slider-1 .single-slider-img-1 {
+
   height: 500px;
   position: relative;
 }
@@ -6447,7 +6460,7 @@ h6.post-title {
 .header-style-1 .header-top-ptb-1 {
   padding: 13px 0;
   border-bottom: 3px solid #39b4ac;
-  background-color: #d8f4e2;
+  background-color: #046963;
   background-image: none;
 }
 
@@ -6655,6 +6668,11 @@ h6.post-title {
   border-top: 1px solid #e2e9e1;
   border-bottom: 1px solid #e2e9e1;
 }
+/* .header-style-4 .header-bottom-bg-color {
+  background-color: #fff;
+  border-top: 1px solid #b79906;
+  border-bottom: 1px solid #b79906;
+} */
 
 .header-style-4 .main-categori-wrap > a {
   color: #fff;
