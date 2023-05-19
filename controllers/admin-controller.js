@@ -51,7 +51,13 @@ module.exports = {
                 adminHelpers.getWalletCount().then((wallet)=>{
 
                   let walletCount=wallet.length
-                  res.render('admin/home',{revenue,ordersCount,productsCount,categoryCount,onlinePaymentsCount,codCount,walletCount})
+
+                  adminHelpers.getMonthlyData().then((response)=>{
+
+                    res.render('admin/home',{revenue,ordersCount,productsCount,categoryCount,onlinePaymentsCount,codCount,walletCount})
+
+                  })
+                 
 
                 })
 
@@ -324,42 +330,6 @@ module.exports = {
 
     })
 
-  },
-  getPremiumCoupen: (req, res) => {
-
-    let temp = [];
-    let allProductsName = 0
-    adminHelpers.getAllCategories().then((response) => {
-
-      adminHelpers.getAllProducts().then((allProducts) => {
-
-        console.log('allproducts', allProducts)
-
-        
-        let allProductsName = sample();
-
-        function sample() {
-          for (let i = 0; i < allProducts.length; i++) {
-            console.log(allProducts[i].title);
-            temp.push(allProducts[i].title); // Corrected spelling of 'title'
-            console.log(temp);
-          }
-          return temp;
-        }
-
-       res.render('admin/premiumCoupon',{response,allProductsName})
-
-
-      })
-
-
-
-    })
-
-  },
-  postPremiumAddCoupon:(req,res)=>{
-    console.log('premimum coupon details')
-    console.log(req.body)
   },
   getProductsListing:(req,res)=>{
 

@@ -1,61 +1,72 @@
- <%-include('../layouts/admin-header')   %>
-<h1>helo admin home</h1>
-<a href="/admin/salesReport">sale report</a>
+<%-include('.. /layouts/admin-header') %>
+    <h1>helo admin home</h1>
+    <a href="/admin/salesReport">sale report</a>
 
-<a href="admin/test-form">helo</a>
+    <a href="admin/test-form">helo</a>
 
-<section class="content-main">
-    <div class="content-header">
-        <div>
-            <h2 class="content-title card-title">Dashboard </h2>
-            <p>Whole data about your business here</p>
-        </div>
-        <div>
-            <a href="/admin/report" class="btn btn-primary"><i class="text-muted material-icons md-post_add"></i>Create report</a>
-        </div>
-    </div>
-    <div class="row d-flex justify-content-center">
-        <div class="col-lg-3">
-            <div class="card card-body mb-4">
-                <article class="icontext">
-                    <span class="icon icon-sm rounded-circle bg-primary-light" ><i class="text-primary material-icons md-monetization_on" style="position: relative;top:12px;" ></i></span>
-                    <div class="text">
-                        <h6 class="mb-1 card-title">Revenue</h6>
-                        <span>₹ <%= revenue[0].totalRevenue %>   </span>
-                        <span class="text-sm">
-                            Shipping fees are not included
-                        </span>
-                    </div>
-                </article>
+    <section class="content-main">
+        <div class="content-header">
+            <div>
+                <h2 class="content-title card-title">Dashboard </h2>
+                <p>Whole data about your business here</p>
+            </div>
+            <div>
+                <a href="/admin/report" class="btn btn-primary"><i
+                        class="text-muted material-icons md-post_add"></i>Create report</a>
             </div>
         </div>
-        <div class="col-lg-3">
-            <div class="card card-body mb-4">
-                <article class="icontext">
-                    <span class="icon icon-sm rounded-circle bg-success-light"><i class="text-success material-icons md-local_shipping" style="position: relative;top:12px;"></i></span>
-                    <div class="text">
-                        <h6 class="mb-1 card-title">Orders</h6> <span> <%= ordersCount %>   </span>
-                        <span class="text-sm">
-                            Total orders placed
-                        </span>
-                    </div>
-                </article>
+        <div class="row d-flex justify-content-center">
+            <div class="col-lg-3">
+                <div class="card card-body mb-4">
+                    <article class="icontext">
+                        <span class="icon icon-sm rounded-circle bg-primary-light"><i
+                                class="text-primary material-icons md-monetization_on"
+                                style="position: relative;top:12px;"></i></span>
+                        <div class="text">
+                            <h6 class="mb-1 card-title">Revenue</h6>
+                            <span>₹ <%= revenue[0].totalRevenue %> </span>
+                            <span class="text-sm">
+                                Shipping fees are not included
+                            </span>
+                        </div>
+                    </article>
+                </div>
             </div>
-        </div>
-        <div class="col-lg-3">
-            <div class="card card-body mb-4">
-                <article class="icontext">
-                    <span class="icon icon-sm rounded-circle bg-warning-light"><i class="text-warning material-icons md-qr_code" style="position: relative;top:12px;"></i></span>
-                    <div class="text">
-                        <h6 class="mb-1 card-title">Products</h6> <span> <%= productsCount %>  </span>
-                        <span class="text-sm">
-                            In <%= categoryCount %> Categories
-                        </span>
-                    </div>
-                </article>
+            <div class="col-lg-3">
+                <div class="card card-body mb-4">
+                    <article class="icontext">
+                        <span class="icon icon-sm rounded-circle bg-success-light"><i
+                                class="text-success material-icons md-local_shipping"
+                                style="position: relative;top:12px;"></i></span>
+                        <div class="text">
+                            <h6 class="mb-1 card-title">Orders</h6> <span>
+                                <%= ordersCount %>
+                            </span>
+                            <span class="text-sm">
+                                Total orders placed
+                            </span>
+                        </div>
+                    </article>
+                </div>
             </div>
-        </div>
-        <!-- <div class="col-lg-3">
+            <div class="col-lg-3">
+                <div class="card card-body mb-4">
+                    <article class="icontext">
+                        <span class="icon icon-sm rounded-circle bg-warning-light"><i
+                                class="text-warning material-icons md-qr_code"
+                                style="position: relative;top:12px;"></i></span>
+                        <div class="text">
+                            <h6 class="mb-1 card-title">Products</h6> <span>
+                                <%= productsCount %>
+                            </span>
+                            <span class="text-sm">
+                                In <%= categoryCount %> Categories
+                            </span>
+                        </div>
+                    </article>
+                </div>
+            </div>
+            <!-- <div class="col-lg-3">
             <div class="card card-body mb-4">
                 <article class="icontext">
                     <span class="icon icon-sm rounded-circle bg-info-light"><i class="text-info material-icons md-shopping_basket" style="position: relative;top:12px;"></i></span>
@@ -68,8 +79,8 @@
                 </article>
             </div>
         </div> -->
-    </div>
-    <!-- <div class="row">
+        </div>
+        <!-- <div class="row">
         <div class="col-xl-8 col-lg-12">
             <div class="card mb-4">
                 <article class="card-body">
@@ -85,215 +96,243 @@
                 </div> -->
 
 
-                <!-- Styles -->
-<style>
-#chartdiv {
-  width: 100%;
-  height: 500px;
-}
-</style>
+        <!-- Styles -->
+        </style>
 
-<!-- Resources -->
-<script src="https://cdn.amcharts.com/lib/5/index.js"></script>
-<script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
-<script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
+        <!-- Resources -->
+        <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
+        <script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
+        <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
 
-<!-- Chart code -->
-<script>
-am5.ready(function() {
+        <!-- Chart code -->
+        <script>
+            am5.ready(function () {
 
-// Create root element
-// https://www.amcharts.com/docs/v5/getting-started/#Root_element
-var root = am5.Root.new("chartdiv");
+                // Create root element
+                // https://www.amcharts.com/docs/v5/getting-started/#Root_element
+                var root = am5.Root.new("chartdiv");
 
 
-// Set themes
-// https://www.amcharts.com/docs/v5/concepts/themes/
-root.setThemes([
-  am5themes_Animated.new(root)
-]);
+                // Set themes
+                // https://www.amcharts.com/docs/v5/concepts/themes/
+                root.setThemes([
+                    am5themes_Animated.new(root)
+                ]);
 
 
-// Create chart
-// https://www.amcharts.com/docs/v5/charts/xy-chart/
-var chart = root.container.children.push(am5xy.XYChart.new(root, {
-  panX: false,
-  panY: false,
-  wheelX: "panX",
-  wheelY: "zoomX",
-  layout: root.horizontalLayout
-}));
+                // Create chart
+                // https://www.amcharts.com/docs/v5/charts/xy-chart/
+                var chart = root.container.children.push(am5xy.XYChart.new(root, {
+                    panX: true,
+                    panY: true,
+                    wheelX: "none",
+                    wheelY: "none"
+                }));
+
+                // We don't want zoom-out button to appear while animating, so we hide it
+                chart.zoomOutButton.set("forceHidden", true);
 
 
-// Add legend
-// https://www.amcharts.com/docs/v5/charts/xy-chart/legend-xy-series/
-var legend = chart.children.push(
-  am5.Legend.new(root, {
-    centerY: am5.p50,
-    y: am5.p50,
-    layout: root.verticalLayout,
-    clickTarget: "none"
-  })
-);
+                // Create axes
+                // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
+                var xRenderer = am5xy.AxisRendererX.new(root, {
+                    minGridDistance: 30
+                });
+                xRenderer.labels.template.setAll({
+                    rotation: -90,
+                    centerY: am5.p50,
+                    centerX: 0,
+                    paddingRight: 15
+                });
+                xRenderer.grid.template.set("visible", false);
 
-legend.valueLabels.template.set("forceHidden", true);
+                var xAxis = chart.xAxes.push(am5xy.CategoryAxis.new(root, {
+                    maxDeviation: 0.3,
+                    categoryField: "country",
+                    renderer: xRenderer
+                }));
 
-
-// Data
-var data = [
-	{ year: "1896", uk: 7, ussr: 0, russia: 0, usa: 20, china: 0 },
-	{ year: "1900", uk: 78, ussr: 0, russia: 0, usa: 55, china: 0 },
-	// { year: "1904", uk: 2, ussr: 0, russia: 0, usa: 394, china: 0 },
-	// { year: "1908", uk: 347, ussr: 0, russia: 0, usa: 63, china: 0 },
-	// { year: "1912", uk: 160, ussr: 0, russia: 0, usa: 101, china: 0 },
-	// { year: "1916", uk: 0, ussr: 0, russia: 0, usa: 0, china: 0 },
-	// { year: "1920", uk: 107, ussr: 0, russia: 0, usa: 193, china: 0 },
-	// { year: "1924", uk: 66, ussr: 0, russia: 0, usa: 198, china: 0 },
-	// { year: "1928", uk: 55, ussr: 0, russia: 0, usa: 84, china: 0 },
-	// { year: "1932", uk: 34, ussr: 0, russia: 0, usa: 181, china: 0 },
-	// { year: "1936", uk: 36, ussr: 0, russia: 0, usa: 92, china: 0 },
-	// { year: "1940", uk: 0, ussr: 0, russia: 0, usa: 0, china: 0 },
-	// { year: "1944", uk: 0, ussr: 0, russia: 0, usa: 0, china: 0 },
-	// { year: "1948", uk: 56, ussr: 0, russia: 0, usa: 148, china: 0 },
-	// { year: "1952", uk: 31, ussr: 117, russia: 0, usa: 130, china: 0 },
-	// { year: "1956", uk: 45, ussr: 169, russia: 0, usa: 118, china: 0 },
-	// { year: "1960", uk: 28, ussr: 169, russia: 0, usa: 112, china: 0 },
-	// { year: "1964", uk: 28, ussr: 174, russia: 0, usa: 150, china: 0 },
-	// { year: "1968", uk: 18, ussr: 188, russia: 0, usa: 149, china: 0 },
-	// { year: "1972", uk: 29, ussr: 211, russia: 0, usa: 155, china: 0 },
-	// { year: "1976", uk: 32, ussr: 285, russia: 0, usa: 155, china: 0 },
-	// { year: "1980", uk: 45, ussr: 442, russia: 0, usa: 0, china: 0 },
-	// { year: "1984", uk: 72, ussr: 0, russia: 0, usa: 333, china: 76 },
-	// { year: "1988", uk: 53, ussr: 294, russia: 0, usa: 193, china: 53 },
-	// { year: "1992", uk: 50, ussr: 0, russia: 0, usa: 224, china: 83 },
-	// { year: "1996", uk: 26, ussr: 0, russia: 115, usa: 260, china: 110 },
-	// { year: "2000", uk: 55, ussr: 0, russia: 188, usa: 248, china: 79 },
-	// { year: "2004", uk: 57, ussr: 0, russia: 192, usa: 264, china: 94 },
-	// { year: "2008", uk: 77, ussr: 0, russia: 143, usa: 315, china: 184 }
-];
+                var yAxis = chart.yAxes.push(am5xy.ValueAxis.new(root, {
+                    maxDeviation: 0.3,
+                    min: 0,
+                    renderer: am5xy.AxisRendererY.new(root, {})
+                }));
 
 
-// Create axes
-// https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
-var xAxis = chart.xAxes.push(am5xy.CategoryAxis.new(root, {
-  categoryField: "year",
-  startLocation: 0.5,
-  endLocation: 0.5,
-  renderer: am5xy.AxisRendererX.new(root, {
-    minGridDistance: 40
-  }),
-  tooltip: am5.Tooltip.new(root, {})
-}));
+                // Add series
+                // https://www.amcharts.com/docs/v5/charts/xy-chart/series/
+                var series = chart.series.push(am5xy.ColumnSeries.new(root, {
+                    name: "Series 1",
+                    xAxis: xAxis,
+                    yAxis: yAxis,
+                    valueYField: "value",
+                    categoryXField: "country"
+                }));
 
-xAxis.data.setAll(data);
+                // Rounded corners for columns
+                series.columns.template.setAll({
+                    cornerRadiusTL: 5,
+                    cornerRadiusTR: 5,
+                    strokeOpacity: 0
+                });
 
-var yAxis = chart.yAxes.push(am5xy.ValueAxis.new(root, {
-  renderer: am5xy.AxisRendererY.new(root, {})
-}));
+                // Make each column to be of a different color
+                series.columns.template.adapters.add("fill", function (fill, target) {
+                    return chart.get("colors").getIndex(series.columns.indexOf(target));
+                });
 
+                series.columns.template.adapters.add("stroke", function (stroke, target) {
+                    return chart.get("colors").getIndex(series.columns.indexOf(target));
+                });
 
-// Add series
-// https://www.amcharts.com/docs/v5/charts/xy-chart/series/
-function createSeries(field, name) {
-  var series = chart.series.push(am5xy.SmoothedXLineSeries.new(root, {
-    name: name,
-    xAxis: xAxis,
-    yAxis: yAxis,
-    valueField: field,
-    valueYField: field + "_hi",
-    openValueYField: field + "_low",
-    categoryXField: "year",
-    tooltip: am5.Tooltip.new(root, {
-      pointerOrientation: "horizontal",
-      labelText: "[fontSize: 18px]{name}[/]\n{categoryX}: [bold]{" + field + "}[/]"
-    })
-  }));
-  
-  // Do not show tooltip for zero values
-  series.get("tooltip").adapters.add("visible", function(visible, target) {
-    if (target.dataItem && (target.dataItem.get("value") > 0)) {
-      return true;
-    }
-    return false;
-  });
-
-  series.strokes.template.setAll({
-    forceHidden: true
-  });
-  
-  series.fills.template.setAll({
-    visible: true,
-    fillOpacity: 1
-  });
+                // Add Label bullet
+                series.bullets.push(function () {
+                    return am5.Bullet.new(root, {
+                        locationY: 1,
+                        sprite: am5.Label.new(root, {
+                            text: "{valueYWorking.formatNumber('#.')}",
+                            fill: root.interfaceColors.get("alternativeText"),
+                            centerY: 0,
+                            centerX: am5.p50,
+                            populateText: true
+                        })
+                    });
+                });
 
 
-  // Make stuff animate on load
-  // https://www.amcharts.com/docs/v5/concepts/animations/
-  series.appear();
+                // // Set data
+                // var data = [{
+                //   "country": "USA",
+                //   "value": 2025
+                // }, {
+                //   "country": "China",
+                //   "value": 1882
+                // }, {
+                //   "country": "Japan",
+                //   "value": 1809
+                // }, {
+                //   "country": "Germany",
+                //   "value": 1322
+                // }, {
+                //   "country": "UK",
+                //   "value": 1122
+                // }, {
+                //   "country": "France",
+                //   "value": 1114
+                // }, {
+                //   "country": "India",
+                //   "value": 984
+                // }, {
+                //   "country": "Spain",
+                //   "value": 711
+                // }, {
+                //   "country": "Netherlands",
+                //   "value": 665
+                // }, {
+                //   "country": "South Korea",
+                //   "value": 443
+                // }, {
+                //   "country": "Canada",
+                //   "value": 441
+                // }];
+                var data = monthlyData.map(function (item) {
+                    return {
+                        "country": item._id,
+                        "value": item.value
+                    };
+                });
 
-  legend.data.push(series);
-}
+                xAxis.data.setAll(data);
+                series.data.setAll(data);
 
-createSeries('JAN',"January",);
-createSeries('FEB',"February");
-createSeries('MAR',"March");
-createSeries('APR',"April");
-createSeries('MAY',"May");
-createSeries('JUN',"June");
-createSeries('JUL',"July");
-createSeries('AUG',"Agust");
-createSeries('SEP',"September");
-createSeries('OCT',"October");
-createSeries('NOV',"November");
-createSeries('DEC',"December");
+                // update data with random values each 1.5 sec
+                setInterval(function () {
+                    updateData();
+                }, 1500)
 
-// Prepare data for the river-stacked series
-for (var i = 0; i < data.length; i++) {
-  var row = data[i];
-  var sum = 0;
+                function updateData() {
+                    am5.array.each(series.dataItems, function (dataItem) {
+                        var value = dataItem.get("valueY") + Math.round(Math.random() * 300 - 150);
+                        if (value < 0) {
+                            value = 10;
+                        }
+                        // both valueY and workingValueY should be changed, we only animate workingValueY
+                        dataItem.set("valueY", value);
+                        dataItem.animate({
+                            key: "valueYWorking",
+                            to: value,
+                            duration: 600,
+                            easing: am5.ease.out(am5.ease.cubic)
+                        });
+                    })
 
-  // Calculate open and close values
-  chart.series.each(function(series) {
-    var field = series.get("valueField");
-    var val = Number(row[field]);
-    row[field + "_low"] = sum;
-    row[field + "_hi"] = sum + val;
-    sum += val;
-  });
-
-  // Adjust values so they are centered
-  var offset = sum / 2;
-  chart.series.each(function(series) {
-    var field = series.get("valueField");
-    row[field + "_low"] -= offset;
-    row[field + "_hi"] -= offset;
-  });
-  
-  chart.series.each(function(series) {
-    var field = series.get("valueField");
-    series.data.setAll(data);
-  });
-
-}
+                    sortCategoryAxis();
+                }
 
 
-// Add cursor
-chart.set("cursor", am5xy.XYCursor.new(root, {
-  behavior: "zoomXY",
-  xAxis: xAxis
-}));
+                // Get series item by category
+                function getSeriesItem(category) {
+                    for (var i = 0; i < series.dataItems.length; i++) {
+                        var dataItem = series.dataItems[i];
+                        if (dataItem.get("categoryX") == category) {
+                            return dataItem;
+                        }
+                    }
+                }
 
 
-// Make stuff animate on load
-// https://www.amcharts.com/docs/v5/concepts/animations/
-chart.appear(1000, 100);
+                // Axis sorting
+                function sortCategoryAxis() {
 
-}); // end am5.ready()
-</script>
+                    // Sort by value
+                    series.dataItems.sort(function (x, y) {
+                        return y.get("valueY") - x.get("valueY"); // descending
+                        //return y.get("valueY") - x.get("valueY"); // ascending
+                    })
 
-<!-- HTML -->
-<div id="chartdiv"></div>
-                <!-- <div class="col-lg-7">
+                    // Go through each axis item
+                    am5.array.each(xAxis.dataItems, function (dataItem) {
+                        // get corresponding series item
+                        var seriesDataItem = getSeriesItem(dataItem.get("category"));
+
+                        if (seriesDataItem) {
+                            // get index of series data item
+                            var index = series.dataItems.indexOf(seriesDataItem);
+                            // calculate delta position
+                            var deltaPosition = (index - dataItem.get("index", 0)) / series.dataItems.length;
+                            // set index to be the same as series data item index
+                            dataItem.set("index", index);
+                            // set deltaPosition instanlty
+                            dataItem.set("deltaPosition", -deltaPosition);
+                            // animate delta position to 0
+                            dataItem.animate({
+                                key: "deltaPosition",
+                                to: 0,
+                                duration: 1000,
+                                easing: am5.ease.out(am5.ease.cubic)
+                            })
+                        }
+                    });
+
+                    // Sort axis items by index.
+                    // This changes the order instantly, but as deltaPosition is set,
+                    // they keep in the same places and then animate to true positions.
+                    xAxis.dataItems.sort(function (x, y) {
+                        return x.get("index") - y.get("index");
+                    });
+                }
+
+
+                // Make stuff animate on load
+                // https://www.amcharts.com/docs/v5/concepts/animations/
+                series.appear(1000);
+                chart.appear(1000, 100);
+
+            }); // end am5.ready()
+        </script>
+
+        <!-- HTML -->
+        <div id="chartdiv"></div> <!-- <div class="col-lg-7">
                     <div class="card mb-4">
 
 
@@ -324,11 +363,11 @@ chart.appear(1000, 100);
                        
                     </div>
                 </div> -->
-            </div>
+        </div>
         </div>
 
 
-        
+
         <div class="col-xl-4 col-lg-12">
             <div class="card mb-4">
                 <!-- <article class="card-body">
@@ -340,28 +379,34 @@ chart.appear(1000, 100);
                     <h5 class="card-title">Payment Mode</h5>
                     <span class="text-muted font-xs">Cash On Delivery</span>
                     <div class="progress mb-3">
-                    
-                        <div class="progress-bar" role="progressbar" style="width: =cod  %">   <%= codCount %></div>
-                        
+
+                        <div class="progress-bar" role="progressbar" style="width: =cod  %">
+                            <%= codCount %>
+                        </div>
+
                     </div>
                     <span class="text-muted font-xs">Online Payment</span>
                     <div class="progress mb-3">
-                        <div class="progress-bar" role="progressbar" style="width:  =online  %"> <%= onlinePaymentsCount %> </div>
+                        <div class="progress-bar" role="progressbar" style="width:  =online  %">
+                            <%= onlinePaymentsCount %>
+                        </div>
                     </div>
 
                     <span class="text-muted font-xs">Wallet</span>
                     <div class="progress mb-3">
-                        <div class="progress-bar" role="progressbar" style="width:  =online  %"> <%= walletCount %> </div>
+                        <div class="progress-bar" role="progressbar" style="width:  =online  %">
+                            <%= walletCount %>
+                        </div>
                     </div>
-                    
+
                 </article>
             </div>
-            
+
         </div>
-         <canvas id="chartData" style="display: none;"  data-monthly=" =data1   ">
+        <canvas id="chartData" style="display: none;" data-monthly=" =data1   ">
 
-         </canvas>
-               
-</section>
+        </canvas>
 
-<%-include('../layouts/admin-footer')  %> 
+    </section>
+
+    <%-include('.. /layouts/admin-footer') %>

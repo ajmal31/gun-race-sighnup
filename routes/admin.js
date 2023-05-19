@@ -66,8 +66,6 @@ router.get('/deleteCategory/:id',adminController.getDeleteCategory)
 //VIEW ORDERS
 router.get('/viewOrders',adminController.viewOrders)
 
-
-
 //ORDERS PRODUCTS DETAILS 
 router.get('/viewMore/:id',adminController.getViewMore)
 
@@ -77,17 +75,12 @@ router.post('/changeOrderStatus/:id',adminController.postChangeOrderStatus)
 //GET ADD COUPEN
 router.get('/coupon',adminController.getAddCoupon)
 
-
 //POST ADD COUPEN
 router.post('/addCoupon',adminController.postAddCoupon)
 
 router.get('/salesReport',adminController.getSalesReport)
 
 router.post('/report',adminController.report)
-
-router.get('/premiumCoupon',adminController.getPremiumCoupen)
-
-router.post('/premimumAddCoupon',adminController.postPremiumAddCoupon)
 
 router.get('/productsListing',adminController.getProductsListing)
 
