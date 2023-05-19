@@ -496,8 +496,90 @@ module.exports = {
         
       })
     })
-  }
+  },
+  getRevenue:((req,res)=>{
 
+    return new Promise((resolve,reject)=>{
+
+      db.get().collection(collection.ordersCollection).aggregate([
+        {$group:{_id:null,totalRevenue:{$sum:{$toDouble:"$total_amount"}}}},
+        {$project:{_id:0,totalRevenue:1}}
+      ]).toArray((err,result)=>{
+        if(err)
+        {
+          console.log('some error founded in aggregation during get total revenue',err)
+        }else if(result){
+
+          console.log('aggrrgation success',result)
+          resolve(result)
+        }
+      })
+    })
+  }),
+   getOnlinePayments:(req,res)=>{
+
+    return new Promise((resolve,reject)=>{
+
+     db.get().collection(collection.ordersCollection).aggregate([{$match:{payment_method:'razorpay'}}]).toArray().then((result)=>{
+
+    
+        // Handle the result
+        if(result)
+        {
+          
+          resolve(result)
+        }
+        
+      })
+    })
+   },
+   getCashonDelivery:()=>{
+    return new Promise((resolve,reject)=>{
+
+      db.get().collection(collection.ordersCollection).aggregate([{$match:{payment_method:'COD'}}]).toArray().then((result)=>{
+ 
+     
+         // Handle the result
+         if(result)
+         {
+          
+           resolve(result)
+         }
+         
+       })
+     })
+    
+   },
+   getWalletCount:()=>{
+    return new Promise((resolve,reject)=>{
+
+      db.get().collection(collection.ordersCollection).aggregate([{$match:{payment_method:'wallet'}}]).toArray().then((result)=>{
+ 
+     
+         // Handle the result
+         if(result)
+         {
+          
+           resolve(result)
+         }
+         
+       })
+     })
+    
+   },
+  deleteCoupon:(id)=>{
+    return new Promise((resolve,reject)=>{
+
+      db.get().collection(collection.coupenCollection).deleteOne({_id:ObjectId(id)}).then((response)=>{
+
+        if(response)
+        {
+         
+          resolve(response)
+        }
+      })
+    })
+  }
 
   
 

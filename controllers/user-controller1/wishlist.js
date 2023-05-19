@@ -24,7 +24,7 @@ module.exports={
           let userId=req.session.userDetails._id
           userHelpers.getAllWishlistProducts(userId).then((response)=>{
   
-              res.render('user/wishList', { userdata })
+              res.render('user/wishList', { userdata ,response})
           })
   
           

@@ -92,16 +92,16 @@
                            
                             <tbody>
                             
-                              
+                                <% let x=1 %>   
                         <% response.forEach(element => { %>
                          
                        
                           
-                          <!-- let x = 1   -->
+                          
                           <!-- let date = element.expire+""  -->
                                 <tr>
                                    
-                                    <td> x++  </td>
+                                    <td> <%=x++%> </td>
                                     <td><%= element.couponCode %> </td>
                                     <td><%= element.discount %> </td>
                                     <td><%= element.limitAmount %> </td>
@@ -109,7 +109,7 @@
                                     <td>dontknow</td>
                                     <td>
                                         
-                                        <a href="/admin/deletecoupon/" onclick="return confirm('Are you sure you want to delete this coupon? Click ok to confirm');" class="btn bg-danger"  ><i class="ri-delete-bin-5-line"></i></a>
+                                        <a href="/admin/deleteCoupon/<%= element._id %>" onclick="return confirm('Are you sure you want to delete this coupon? Click ok to confirm');" class="btn bg-danger"  ><i class="ri-delete-bin-5-line"></i></a>
                                     </td>
                                  
                                

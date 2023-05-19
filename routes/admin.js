@@ -99,5 +99,8 @@ router.get('/categoryOffer/:id',adminController.getCategoryOffer)
 
 router.post('/addCategoryOffer/:id',adminController.postAddCatOffer)
 
+//DELETE COUPON
+router.get('/deleteCoupon/:id',adminController.deleteCoupon)
+
 
 module.exports = router;

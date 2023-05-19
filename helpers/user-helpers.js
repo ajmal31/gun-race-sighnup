@@ -217,7 +217,7 @@ module.exports = {
   getCartProducts: (uid) => {
     return new Promise((resolve, reject) => {
 
-      let CartItems = db.get().collection(collection.cartCollection).aggregate([
+       db.get().collection(collection.cartCollection).aggregate([
 
         {
 
@@ -582,30 +582,48 @@ module.exports = {
       })
     })
   },
-  addWishlist: (id, userId) => {
+  addWishlist: (pid, uid) => {
 
     return new Promise((resolve, reject) => {
 
-    db.get().collection(collection.wishlistCollection).find({userId:ObjectId(userId)}).then((response)=>{
+      db.get().collection(collection.wishlistCollection).find({ userId: ObjectId(uid) }).toArray().then((response) => {
 
-      if(response)
-      {
-        db.get().collection(collection.wishlistCollection).updateOne()
-      }
-    })
+        if (!response.length == 0) {
+          // db.get().collection(collection.cartCollection).findOne({userId:ObjectId(uid)},{productList:{ $elemMatch : { pid:ObjectId(pid)}}}).then((result)=>{
+          db.get().collection(collection.wishlistCollection).findOne({ userId: ObjectId(uid), productList: { $elemMatch: { pid: ObjectId(pid) } } }).then((result) => {
 
-      db.get().collection(collection.wishlistCollection).insertOne({ userId: ObjectId(userId), productlist:[{productId:ObjectId(id)} ]}).then((response) => {
 
-        if (response) {
-          console.log('wihslist product inserted succesfully')
-          resolve(response)
+            if (result) {
+
+              let exist = true
+              resolve({ exist })
+            } else {
+
+              db.get().collection(collection.wishlistCollection).updateOne({ userId: ObjectId(uid) }, { $push: { productList: { pid: ObjectId(pid) } } }).then((data) => {
+                if (data) {
+
+                  let exist = false
+                  resolve({ exist })
+                }
+              })
+            }
+
+          })
         } else {
-          console.log('products not added in wishlist')
+
+          db.get().collection(collection.wishlistCollection).insertOne({ userId: ObjectId(uid), productList: [{ pid: ObjectId(pid), }] }).then((data) => {
+
+            if (data) {
+
+              let exist = false
+              resolve({ exist })
+            }
+          })
         }
+
       })
     })
-  },
-  // checkPaymentStatus:(oid)=>{
+  },  // checkPaymentStatus:(oid)=>{
 
   //   return new Promise((resolve,reject)=>{
 
@@ -617,19 +635,59 @@ module.exports = {
   //   })
   // },
 
-  getAllWishlistProducts: (userId) => {
+  getAllWishlistProducts: (uid) => {
 
     return new Promise((resolve, reject) => {
 
-      db.get().collection(collection.wishlistCollection).find({ userId: ObjectId(userId) }).toArray().then((response) => {
+      db.get().collection(collection.wishlistCollection).aggregate([
 
-        console.log('wishlists')
-        console.log(response)
-        resolve(response)
+        {
+
+          $match: { userId: ObjectId(uid) }
+
+
+        },
+        {
+          $unwind: '$productList'
+        },
+        {
+          $project: {
+            userId: '$userId',
+            pid: '$productList.pid',
+            
+          }
+        },
+        {
+          $lookup: {
+            from: collection.productCollection,
+            localField: 'pid',
+            foreignField: '_id',
+            as: 'products'
+          }
+        },
+        {
+          $project: {
+            userId: 1, pid: 1,  products: { $arrayElemAt: ['$products', 0] }
+          }
+        }
+
+
+      ]).toArray((err, docs) => {
+        if (err) {
+
+        } else {
+
+          console.log('whilslit final result',docs)
+
+          resolve(docs)
+
+        }
       })
-    })
 
+    })
   },
+
+  
   addToWallet: (uid, amount) => {
 
     return new Promise((resolve, reject) => {

@@ -25,7 +25,54 @@ module.exports = {
   },
   getHome: (req, res) => {
 
-    res.render('admin/home')
+    console.log('admin home ')
+    adminHelpers.getRevenue().then((revenue)=>{
+
+      adminHelpers.viewOrders().then((allOrders)=>{
+
+        let ordersCount=allOrders.length
+
+        adminHelpers.getAllProducts().then((allProducts)=>{
+
+          let productsCount=allProducts.length
+
+          adminHelpers.getAllCategories().then((allCategories)=>{
+
+            let categoryCount=allCategories.length
+
+            adminHelpers.getOnlinePayments().then((onlinePayments)=>{
+
+              onlinePaymentsCount=onlinePayments.length
+    
+              adminHelpers.getCashonDelivery().then((cashonDelivery)=>{
+
+                codCount=cashonDelivery.length
+
+                adminHelpers.getWalletCount().then((wallet)=>{
+
+                  let walletCount=wallet.length
+                  res.render('admin/home',{revenue,ordersCount,productsCount,categoryCount,onlinePaymentsCount,codCount,walletCount})
+
+                })
+
+
+              })
+
+            })
+           
+          })
+          
+
+        })
+        
+       
+
+      })
+     
+     
+    })
+
+    
   },
   getLogout: (req, res) => {
     req.session.admin = false
@@ -372,6 +419,16 @@ module.exports = {
       })
       
     
+  },
+  deleteCoupon:(req,res)=>{
+
+    previuosUrl=req.header('Referer')
+
+    adminHelpers.deleteCoupon(req.params.id).then((response)=>{
+     
+      res.redirect(previuosUrl)
+      
+    })
   }
   
 }

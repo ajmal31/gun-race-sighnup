@@ -26,11 +26,11 @@ $j(document).ready(function() {
         </thead>
         <tbody> 
           <% allOrders.forEach(element => { %>
-            <% let date=element.date %>
+            <% let date=element.date+'' %>
             <tr>
               <td><%= element._id %></td>
              
-              <td><%= date</td>
+              <td><%= date.substring(0,16)%></td>
               <td><%= element.payment_method %></td>
               <td><%= element.payment_status %></td>
               <td><%= element.order_status %></td>
