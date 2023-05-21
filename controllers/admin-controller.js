@@ -52,9 +52,11 @@ module.exports = {
 
                   let walletCount=wallet.length
 
-                  adminHelpers.getMonthlyData().then((response)=>{
+                  adminHelpers.getMonthlyData().then((monthlydetails)=>{
 
-                    res.render('admin/home',{revenue,ordersCount,productsCount,categoryCount,onlinePaymentsCount,codCount,walletCount})
+                    console.log('monthly dataila controller reached succefully')
+
+                    res.render('admin/home',{revenue,ordersCount,productsCount,categoryCount,onlinePaymentsCount,codCount,walletCount,monthlydetails})
 
                   })
                  

@@ -583,46 +583,50 @@ module.exports = {
   getMonthlyData:()=>{
     return new Promise(async(resolve,reject)=>{
      
-      db.get().collection(collection.ordersCollection).aggregate([
+      let monthlyRevenue = await db.get().collection(collection.ordersCollection).aggregate([
         {
           $group: {
             _id: {
-              $dateToString: { format: "%Y-%m", date: { $toDate: "$date" } }
+              month: { $month: "$date" }
             },
-            totalRevenue: { $sum: { $toDouble: "$total_amount" } }
+            total: {
+              $sum: { $toDouble: "$total_amount" }
+            }
           }
         },
         {
-          $sort: { "_id": 1 }
+          $project: {
+            month: "$_id.month",
+            _id: 0,
+            total: 1
+          }
         },
         {
-          $group: {
-            _id: null,
-            revenueByMonth: { $push: { month: "$_id", revenue: "$totalRevenue" } }
+          $sort: {
+            month: 1
+          }
+        },
+        {
+          $project: {
+            months: {
+              $arrayElemAt: [
+                [
+                  "",
+                  "January", "February", "March", "April", "May", "June",
+                  "July", "August", "September", "October", "November", "December"
+                ],
+                "$month"
+              ]
+            },
+            total: 1
           }
         }
-      ]).toArray((err, result) => {
-        if (err) {
-          console.log('Error occurred:');
-          console.log(err);
-        } else {
-          console.log('Monthly revenue data:');
-          const revenueByMonth = result[0].revenueByMonth;
-          const monthMap = {};
-          const months = [
-            "January", "February", "March", "April", "May", "June",
-            "July", "August", "September", "October", "November", "December"
-          ];
-          for (let i = 0; i < months.length; i++) {
-            const month = months[i];
-            const match = revenueByMonth.find(entry => entry.month === month);
-            monthMap[month] = match ? match.revenue : 0;
-          }
-          console.log(monthMap);
-        }
-      });
+      ]).toArray();
       
-       
+      console.log('Monthly revenue data:');
+      console.log(monthlyRevenue);
+      resolve(monthlyRevenue);
+             
       
   
     })

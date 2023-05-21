@@ -18,8 +18,14 @@ module.exports={
         return new Promise((resolve, reject) => {
 
             userHelpers.signupData(req.body).then((data) => {
-                req.session.userDetails = req.body
-                res.redirect('/')
+                
+                userId=data.insertedId
+                userHelpers.createWallet(userId).then((response)=>{
+
+                    req.session.userDetails = req.body
+                    res.redirect('/')
+                })
+                
             })
         })
 
@@ -111,5 +117,35 @@ module.exports={
 
 
     },
+    getChangePassword:(req,res)=>{
 
+        let userdata=req.session.userDetails
+        notupdated=req.session.notupdated
+        req.session.notupdated=false
+        res.render('user/currentPassword',{userdata,notupdated})
+        
+    },
+   checkCurrentPassword:(req,res)=>{
+
+    let userId=req.session.userDetails._id
+    let userdata=req.session.userDetails
+     userHelpers.passwordChecking(userId,req.body).then((response)=>{
+        if(response)
+        {
+            res.render('user/newPassword',{userdata})
+        }else{
+            req.session.notupdated=true
+            res.redirect('/changePassword')
+        }
+     })
+   },
+   updatePassword:(req,res)=>{
+    
+    let uid=req.session.userDetails._id
+    let newPassword=req.body.password
+    userHelpers.updatePassword(uid,newPassword).then((response)=>{
+
+        res.redirect('/')
+    })
+   }
 }

@@ -20,6 +20,7 @@ let wishlist=require('../controllers/user-controller1/wishlist');
 const userController = require('../controllers/user-controller');
 const userHelpers = require('../helpers/user-helpers');
 const adminHelpers = require('../helpers/admin-helpers');
+const user = require('../controllers/user-controller1/user');
 
 /* GET users listing. */
 
@@ -130,7 +131,14 @@ router.get('/returnOrder/:id',auth.userAuthentication,orders.getReturnOrder)
 
 router.get('/wallet',auth.userAuthentication,wallet.getWallet)
 
+//CHANGE PASSWORD REQUESTIN
+router.get('/changePassword',auth.userAuthentication,user.getChangePassword)
 
+//POST CHANGE PASSWORD
+router.post('/checkCurrentPassword',auth.userAuthentication,user.checkCurrentPassword)
+
+//UPDATE PASSWORD
+router.post('/updatePassword',auth.userAuthentication,user.updatePassword)
 // router.get('/test-home',(req,res)=>{
 //     adminHelpers.getAllCategories().then((data)=>{
 //         let userdata=req.session.userDetails

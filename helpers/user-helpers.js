@@ -772,6 +772,69 @@ module.exports = {
         resolve(response)
       })
     })
+  },
+  createWallet:(uid)=>{
+
+    return new Promise((resolve,reject)=>{
+
+      db.get().collection(collection.walletCollection).insertOne({userId:ObjectId(uid),walletAmount:0}).then((response)=>{
+
+        if(response)
+        {
+          console.log('wallet createed succesfully')
+          resolve(response)
+        }else{
+          console.log('wallet not created')
+        }
+      })
+    })
+  },
+  passwordChecking:(uid,data)=>{
+    return new Promise(async (resolve,reject)=>{
+
+      
+      let password=data.password
+      console.log('user requestd password')
+      console.log(password);
+     
+
+      db.get().collection(collection.userCollection).findOne({_id:ObjectId(uid)}).then((response)=>{
+
+      console.log('repsonse');
+        console.log(response)
+        let compare= bcrypt.compare(password,response.password)
+
+          if(compare)
+          {
+            console.log(' current password is valid');
+            resolve(compare)
+          }else{
+            console.log('cuurent passwor invalid')
+            resolve(compare)
+          }
+        
+      })
+    })
+  },
+  updatePassword:(uid,newpassword)=>{
+    return new Promise(async(resolve,reject)=>{
+
+      newpassword= await bcrypt.hash(newpassword.toString(),10)
+      console.log('after hashing',newpassword);
+
+      db.get().collection(collection.userCollection).updateOne({_id:ObjectId(uid)},{$set:{password:newpassword}}).then((response)=>{
+        console.log('after update');
+        console.log(response);
+        if(response)
+        {
+          console.log('password updated succefull');
+          resolve(response)
+        }else
+        {
+          console.log('password not updated')
+        }
+      })
+    })
   }
 
 
