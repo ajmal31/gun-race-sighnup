@@ -119,8 +119,19 @@ module.exports = {
   postAddProducts: (req, res) => {
 
     let images = req.files.map(a => a.filename)
-    adminHelpers.addProducts(req.body, images)
+    let body={
+      title:req.body.title,
+      description:req.body.description,
+      price:Number(req.body.price),
+      quantity:Number(req.body.quantity),
+      category:req.body.category, 
 
+    }
+   
+
+    adminHelpers.addProducts(body, images)
+   console.log(body.price,body.quantity,'twsting');
+   
     console.log(images)
     res.redirect('/admin')
   },
@@ -151,15 +162,21 @@ module.exports = {
 
   },
   postUpdateProduct: (req, res) => {
-    console.log('updated product details checking proccess')
-    console.log(req.body)
-    console.log(req.params.id)
-    console.log(req.files)
+ 
     let images = req.files.map(a => a.filename)
+
     console.log(images)
-    adminHelpers.updateProduct(req.body, req.params.id, images).then((data) => {
+    let body={
+      title:req.body.title,
+      description:req.body.description,
+      price:Number(req.body.price),
+      quantity:Number(req.body.quantity),
+      category:req.body.category, 
+
+    }
+    adminHelpers.updateProduct(body, req.params.id, images).then((data) => {
       if (data) {
-        console.log('done')
+       
         res.redirect('/admin/viewProducts')
       }
     })

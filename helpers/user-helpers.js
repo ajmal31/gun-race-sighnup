@@ -8,6 +8,7 @@ const TWILIO_ACCOUNT_SID = process.env.accountSid
 const TWILIO_AUTH_TOKEN = process.env.auth
 const client = twilio(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN);
 const Razorpay = require('razorpay');
+const product = require('../controllers/user-controller1/product');
 
 
 var instance = new Razorpay({
@@ -262,26 +263,74 @@ module.exports = {
 
     })
   },
-  changeCartCount: (uid, pid, count) => {
+
+  changeCartCount: (uid, details) => {
+
+    count=Number(details.count)
+    quantity=Number(details.quantity)
+    pid=details.pid
+    
 
     return new Promise((resolve, reject) => {
 
+      if(count===-1&&quantity===1)
+      {
 
-      db.get().collection(collection.cartCollection).updateOne({ userId: ObjectId(uid), "productList.pid": ObjectId(pid) }, { $set: { "productList.$.quantity": Number(count) } }).then((response) => {
+        db.get().collection(collection.cartCollection).updateOne(
+          { userId: ObjectId(uid) },
+          { $pull: { productList: { pid: ObjectId(pid) } } }
+        ).then((remove) => {
+          
+          remove=true
+          console.log('remove succfully due to 0quantity',);
+          resolve({update:false,remove:true})
+          // ...
+        });
+      }else{
 
-        if (response) {
+        db.get().collection(collection.cartCollection).updateOne({ userId: ObjectId(uid), "productList.pid": ObjectId(pid) }, { $inc: { "productList.$.quantity": Number(count) } }).then((response) => {
 
+          if (response) {
+  
+            console.log('updated succefullly');
+             
+             update=true
+             
+            resolve({update:true,remove:false})
 
-          resolve(response)
-        } else {
+          } else {
 
-          resolve(response)
-        }
-      })
+            console.log('not updated');
+            resolve(response)
+          }
+        })
+      }
+
+     
 
 
     })
   },
+  // changeCartCount: (uid, pid, count) => {
+
+  //   return new Promise((resolve, reject) => {
+
+
+  //     db.get().collection(collection.cartCollection).updateOne({ userId: ObjectId(uid), "productList.pid": ObjectId(pid) }, { $set: { "productList.$.quantity": Number(count) } }).then((response) => {
+
+  //       if (response) {
+
+
+  //         resolve(response)
+  //       } else {
+
+  //         resolve(response)
+  //       }
+  //     })
+
+
+  //   })
+  // },
   removeCartProduct: (pid, uid) => {
     return new Promise((resolve, reject) => {
 
@@ -835,8 +884,118 @@ module.exports = {
         }
       })
     })
-  }
+  },
+  getCartTotal:(uid)=>{
 
+    return new Promise((resolve,reject)=>
+    {
+
+      db.get().collection(collection.cartCollection).aggregate([
+      {
+          $match:{userId:ObjectId(uid)}
+      
+      },
+      {
+        $unwind:'$productList'
+      },
+      {
+        $project:{
+          userId:'$userId',
+          pid:'$productList.pid',
+          quantity:'$productList.quantity',
+        },
+      },
+      {
+        $lookup:{
+          from:collection.productCollection,
+          localField:'pid',
+          foreignField:'_id',
+          as:'products'
+        }
+      },
+      {
+        $project:{
+          quantity:1,productPrice:{'$arrayElemAt':['$products.price',0]}
+        }
+      },
+      
+       {
+        $group:{
+          _id:null,
+         
+            subtotal:{$sum:{$multiply:['$quantity','$productPrice']}}
+          
+        }
+      },
+      {
+        $project:{
+           cartTotal:{$sum:'$subtotal'}
+        }
+      }
+      ]).toArray((err,docs)=>{
+        if(err)
+        {
+          console.log(err);
+          console.log('error founded');
+        }else
+        {
+          console.log('toatal succesfll');
+          console.log(docs);
+          resolve(docs)
+        }
+      })
+    })
+  },
+
+  getEachProductTotal: (uid) => {
+  
+    return new Promise((resolve,reject)=>{
+
+      db.get().collection(collection.cartCollection).aggregate([
+        {
+          $match:{userId:ObjectId(uid)}
+        },
+        {
+          $unwind:'$productList',
+        },
+       {
+        $project:{
+
+          userId:'$userId',
+          pid:'$productList.pid',
+          quantity:'$productList.quantity',
+        }
+       },
+       {
+        $lookup:{
+          from:collection.productCollection,
+          localField:'pid',
+          foreignField:'_id',
+          as:'product'
+        }
+       },
+       {
+        $project:{
+          userId:1,pid:1,quantity:1 ,productPrice:{ '$arrayElemAt': ['$product.price',0 ] }
+        }
+       },
+       {
+         $project:{
+           subtotal:{$sum:{ $multiply: [ '$quantity', '$productPrice'] }}
+         }
+       }
+      ]).toArray((err,docs)=>{
+
+        if(err)
+        {
+          console.log('errnfounded',err)
+        }else{
+          subtotal=docs.map(item=>item.subtotal)
+          resolve(subtotal)
+        }
+      })
+    })
+  },
 
 
 

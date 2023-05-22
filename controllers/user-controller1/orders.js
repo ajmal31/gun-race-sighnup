@@ -3,7 +3,7 @@ let adminHelpers = require('../../helpers/admin-helpers')
 const { ObjectId } = require('mongodb')
 
 
-module.exports={
+module.exports = {
     postPlaceOrder: (req, res) => {
 
         const previousUrl = req.header('Referer');
@@ -13,125 +13,128 @@ module.exports={
         let totalAmount = req.body.amount
         let uid = req.session.userDetails._id
         let payment = req.body.payment_mode
-        let walletChecking=0
+        let walletChecking = 0
         console.log('pament method')
         console.log(payment)
-        
-        if(addressId==null)
-         {
-             res.redirect(previousUrl)
 
-         }
-         else if(payment==='wallet'){
-          
-            userHelpers.finduserWallet(uid).then((response)=>{
+        if (addressId == null) {
+            res.redirect(previousUrl)
 
-                console.log('wallet amount',response.walletAmount)
-                walletUpdateAmount=response.walletAmount-Number(totalAmount)
+        }
+        else if (payment === 'wallet') {
+
+            userHelpers.finduserWallet(uid).then((response) => {
+
+                console.log('wallet amount', response.walletAmount)
+                walletUpdateAmount = response.walletAmount - Number(totalAmount)
 
                 console.log('walletcheking')
                 console.log(walletUpdateAmount)
-                if(walletUpdateAmount>0)
-                {
+                if (walletUpdateAmount > 0) {
                     userHelpers.getCartProducts(uid).then((cartProducts) => {
 
                         userHelpers.getUserSpecificAddress(addressId).then((userAddress) => {
-            
-                            
-            
-                                userHelpers.placeOrder(cartProducts, userAddress, uid, totalAmount, payment).then((orderId) => {
-                                    if (orderId) {
-                
-                                        //Order Details inserted in the order collection after clearing the user cart
-                
-                                        userHelpers.removeCartData(uid).then((remove) => {
-                                            if (remove) {
-                                                   
-                                                userHelpers.updateWalletAmount(uid,walletUpdateAmount).then((response)=>{
-                                                     
-                                                    res.json({status:true})
 
-                                                })
-                                                   
-                                                    
- 
-                                                
-                                            }
-                                        })
-                
-                                    }
-                
-                
-                                })
-                            
-                            
+
+
+                            userHelpers.placeOrder(cartProducts, userAddress, uid, totalAmount, payment).then((orderId) => {
+                                if (orderId) {
+
+                                    //Order Details inserted in the order collection after clearing the user cart
+
+                                    userHelpers.removeCartData(uid).then((remove) => {
+                                        if (remove) {
+
+                                            userHelpers.updateWalletAmount(uid, walletUpdateAmount).then((response) => {
+
+                                                res.json({ status: true })
+
+                                            })
+
+
+
+
+                                        }
+                                    })
+
+                                }
+
+
+                            })
+
+
                         })
-            
+
                     })
 
-                }else{
+                } else {
                     console.log('wallet balance not enough this yui')
                     res.redirect('/cart')
-                   
+
                 }
             })
-            
-         }
-         else{
+
+        }
+        else {
 
             console.log('jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj')
             userHelpers.getCartProducts(uid).then((cartProducts) => {
 
                 userHelpers.getUserSpecificAddress(addressId).then((userAddress) => {
-    
-                    
-    
-                        userHelpers.placeOrder(cartProducts, userAddress, uid, totalAmount, payment).then((orderId) => {
-                            if (orderId) {
-        
-                                //Order Details inserted in the order collection after clearing the user cart
-        
-                                userHelpers.removeCartData(uid).then((remove) => {
-                                    if (remove) {
-        
-                                        
-        
-                                        if(payment === 'razorpay') {
-                                            userHelpers.generateRazorpay(orderId,totalAmount).then((order)=>{
-                                            console.log(order)
-                                            console.log("order")
-                                              req.session.coupon=null
-                                             res.json({order:order,status:false})
-                                                
-                                            });
-                                          }else
-                                          {
-                                            
-                                            res.json({status:true})
-                                                 
-                                           
-                                          }
-                                          
-                                          
-                                        
+
+
+
+                    userHelpers.placeOrder(cartProducts, userAddress, uid, totalAmount, payment).then((orderId) => {
+                        if (orderId) {
+
+                            //Order Details inserted in the order collection after clearing the user cart
+
+                            userHelpers.removeCartData(uid).then((remove) => {
+                                if (remove) {
+
+
+
+                                    if (payment === 'razorpay') {
+                                        userHelpers.generateRazorpay(orderId, totalAmount).then((order) => {
+
+                                            // userHelpers.changePaymentStatus(orderId).then((response) => {
+
+                                                console.log('ordeeeeeeeeeeeeeeeeeeeeeeeeeeeeereeeeeeeeeeeee',orderId)
+                                                console.log(order)
+                                                console.log("order")
+                                                req.session.coupon = null
+                                                res.json({ order: order, status: false })
+                                            // })
+
+
+                                        });
+                                    } else {
+
+                                        res.json({ status: true })
+
+
                                     }
-                                })
-        
-                            }
-        
-        
-                        })
-                    
-                    
+
+
+
+                                }
+                            })
+
+                        }
+
+
+                    })
+
+
                 })
-    
+
             })
 
-         }
-        
+        }
 
-    
-       
+
+
+
 
 
     },
@@ -161,7 +164,7 @@ module.exports={
             products = orders.products
             address = orders.address
             total = orders.total_amount
-            orderStatus=orders.order_status
+            orderStatus = orders.order_status
             console.log('heeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee')
             console.log(products)
             console.log(address)
@@ -169,67 +172,66 @@ module.exports={
 
 
             let userdata = req.session.userDetails
-            res.render('user/orderProductDetails', { userdata, products, address, total ,id ,orderStatus})
+            res.render('user/orderProductDetails', { userdata, products, address, total, id, orderStatus })
 
 
         })
     },
-    getOrderSuccess:(req,res)=>{
+    getOrderSuccess: (req, res) => {
 
 
-        let userdata=req.session.userDetails
-        res.render('user/orderSuccess',{userdata})
+        let userdata = req.session.userDetails
+        res.render('user/orderSuccess', { userdata })
     },
-    getCancelOrder:(req,res)=>{
+    getCancelOrder: (req, res) => {
 
-        previousUrl=req.header('Referer')
+        previousUrl = req.header('Referer')
 
-       let oid=req.params.id
-       let uid=req.session.userDetails._id
-       userHelpers.cancelOrder(oid).then((response)=>{
-       
-        userHelpers.getOneOrder(oid).then((response)=>{
+        let oid = req.params.id
+        let uid = req.session.userDetails._id
+        userHelpers.cancelOrder(oid).then((response) => {
+
+            userHelpers.getOneOrder(oid).then((response) => {
 
 
-            if(response.payment_status==='succeed')
-            {
-                walletAmount=Number(response.total_amount)
+                if (response.payment_status === 'succeed') {
+                    walletAmount = Number(response.total_amount)
 
-                userHelpers.addToWallet(uid,walletAmount).then((response)=>{
-                res.redirect(previousUrl)
+                    userHelpers.addToWallet(uid, walletAmount).then((response) => {
+                        res.redirect(previousUrl)
+
+                    })
+                } else {
+
+                    res.redirect(previousUrl)
+                }
+            })
+
+
+
+        })
+    },
+    getReturnOrder: (req, res) => {
+
+        previousUrl = req.header('Referer')
+
+        let oid = req.params.id
+        let uid = req.session.userDetails._id
+        userHelpers.returnOrder(oid).then((response) => {
+
+            userHelpers.getOneOrder(oid).then((response) => {
+
+                walletAmount = Number(response.total_amount)
+                userHelpers.addToWallet(uid, walletAmount).then((response) => {
+                    res.redirect(previousUrl)
 
                 })
-            }else{
-             
-                res.redirect(previousUrl)
-            }
-        })
-       
-           
+            })
 
-       })
-   },
-   getReturnOrder:(req,res)=>{
 
-    previousUrl=req.header('Referer')
 
-   let oid=req.params.id
-   let uid=req.session.userDetails._id
-   userHelpers.returnOrder(oid).then((response)=>{
-
-    userHelpers.getOneOrder(oid).then((response)=>{
-
-        walletAmount=Number(response.total_amount)
-        userHelpers.addToWallet(uid,walletAmount).then((response)=>{
-            res.redirect(previousUrl)
 
         })
-    })
-      
-   
-       
+    },
 
-   })
-  },
-    
 }

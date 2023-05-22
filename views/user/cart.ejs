@@ -40,11 +40,10 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <% let total=0 %>
-                        <% data.forEach(element=> { %>
-                          <% let price=Number(element.products.price) %>
-                            <% let subtotal=element.quantity*price %>
-                              <% total=total + subtotal %>
+                      
+                        <% data.forEach((element,index)=> { %>
+                          <% console.log(index) %>
+                          
                                 <tr>
                                   <td class="col-12 col-md-2 image"><img src="/images/<%=element.products.image[0]%>"
                                       alt="#"></td>
@@ -63,13 +62,38 @@
                                                  
                                                 
                                               </td> -->
-                                  <td class="col-6 col-md-2 text-center">
+
+                                  <!-- <td class="col-6 col-md-2 text-center">
                                     <input class="itemqty form-control" type="number" name="qty" id="quantity_<%=element.pid%>" onchange="countupdate('<%=element.pid%>')" value="<%=element.quantity%>" min="1" max="<%= element.products.quantity %>">
-                                  </td>
+                                  </td> -->
+                                  
+
+                                    <td class="col-6 col-md-2 text-center">
+
+                                      <button class="cart-item-count mr-3 " style="background-color: dodgerblue;font-weight: bold; color: white; border-color: aliceblue;" onclick="countupdate( '<%=element.pid%>','<%=element.products.price%>',-1 )" > - </button>
+                                    
+                                       <span id="<%= element.pid %>"><%= element.quantity %></span>
+                                       <button style="background-color: dodgerblue; color: white; border-color: aliceblue;"  class="cart-item-count ml-3" onclick="countupdate( '<%=element.pid%>','<%=element.products.price%>',1 )" > + </button>
+  
+                                    </td>
+                                 
+                                    
+                                     
+                                    
+                                  
+                                  
                                   <td id="subtotal" class="col-6 col-md-2 text-right" data-title="Subtotal">
-                                    <input class="text-center form-control" name="subtotal" id="subtotal-input"
-                                      value="<%=subtotal %>" readonly>
+                                    <% let price=element.products.price 
+                                      let quantity=element.quantity
+                                      let subtotal=price*quantity
+                                    %>
+                                      <!-- <input class="text-center form-control" name="subtotal" id="subtotal-input" value="<%=subtotal%>" readonly> -->
+                                      <span class="text-center" id="subtotal-span"><%=subtotal%></span>
+
+                                    
+                                    
                                   </td>
+                                 
                                   
                                   <td class="col-6 col-md-1 action" data-title="Remove">
                                     <a id="remove" onclick="confirmRemove('<%=element.pid%>')" class="text-muted">
@@ -77,7 +101,7 @@
                                     </a>
                                   </td>
                                 </tr>
-                                <% }) %>
+                                <% }) %> 
                                   <tr>
                                     <td colspan="6" class="text-end">
                                       <a href="# " class="text-muted"> <i class="fi-rs-cross-small"></i> Clear Cart </a>
@@ -103,7 +127,7 @@
 
                             <tr>
                               <td class="cart_total_label"> </td>
-                              <td class="cart_total_amount"><span class="font-lg fw-900 text-brand">₹<%= total %>
+                              <td class="cart_total_amount"><span class="font-lg fw-900 text-brand" id="temp-cart">₹<%= cartTotal[0].cartTotal %>
                                 </span></td>
                             </tr>
                             <tr>
@@ -113,8 +137,8 @@
                             </tr>
                             <tr>
                               <td class="cart_total_label">Total</td>
-                              <td class="cart_total_amount"><strong><span class="font-xl fw-900 text-brand">
-                                    <%=total %>
+                              <td class="cart_total_amount"><strong><span class="font-xl fw-900 text-brand" id="cart-total" >
+                                <%= cartTotal[0].cartTotal %>
                                   </span></strong></td>
                             </tr>
 
@@ -170,33 +194,72 @@
 
 
 
-            function countupdate(pid) {
-  let inputId = "quantity_" + pid;
-  let count = document.getElementById(inputId).value;
+//  function countupdate(pid,price,count,) {
+//    quantity=document.getElementById(pid).innerHTML
+  
+//   $.ajax({
+//     url: '/cartCountUpdate',
+//     method: 'post',
+//     data: { count: count, pid: pid ,quantity:quantity},
+//     success: (response) => {  
+  
+//     if(response.response.remove)
+//     {
+//       alert('your product has been deleted')
+//       location.reload()
+//     }else{
+
+//        let temp=document.getElementById(pid).innerHTML=Number(quantity)+Number(count)
+//        document.getElementById('cart-total').innerHTML=response.cartTotal[0].cartTotal
+//        document.getElementById('temp-cart').innerHTML=response.cartTotal[0].cartTotal
+
+      
+//       let subtotal=temp*price
+//       console.log(subtotal)
+      
+//       document.getElementById('subtotal-span').textContent = subtotal;
+
+
+      
+//       //  document.getElementById('subtotal-input').innerHTML=
+//     }
+
+      
+//     }
+//   });
+// }
+
+
+function countupdate(pid, price, count) {
+  let quantity = document.getElementById(pid).innerHTML;
 
   $.ajax({
     url: '/cartCountUpdate',
     method: 'post',
-    data: { quantity: count, pid: pid },
+    data: { count: count, pid: pid, quantity: quantity },
     success: (response) => {
-      console.log("QUAAA");
-      if (response) {
-        let cartCount = document.getElementById('cart-count');
-        cartCount.innerHTML = response.cartCount;
+      if (response.response.remove) {
+        alert('Your product has been deleted');
+        location.reload();
+      } else {
+        document.getElementById(pid).innerHTML = Number(quantity) + Number(count);
+        document.getElementById('cart-total').innerHTML = response.cartTotal[0].cartTotal;
+        document.getElementById('temp-cart').innerHTML = response.cartTotal[0].cartTotal;
 
-        let total = 0;
-        data.forEach(element => {
-          let price = Number(element.products.price);
-          let subtotal = element.quantity * price;
-          total += subtotal;
-        });
-
-        let subtotalInput = document.getElementById('subtotal-input');
-        subtotalInput.value = total;
+        let subtotal = (Number(quantity) + Number(count)) * price;
+        document.getElementById('subtotal-span').textContent = subtotal;
       }
     }
   });
 }
+
+$.ajaxSetup({
+  headers: {
+    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+  }
+});
+
+
 
             function confirmRemove(pid) {
               swal({

@@ -16,11 +16,14 @@ module.exports={
             if(response)
             {
 
-                let orderId=req.body['order[receipt]'];
+                let orderId=req.body.order.receipt
+                
                 
                 userHelpers.changePaymentStatus(orderId).then((response)=>{
 
-                      
+                    console.log('after veriffyinggggg');
+                    console.log(orderId)
+                      console.log(response);
                     res.json(response)
                 })
                 

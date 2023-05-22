@@ -12,9 +12,23 @@ module.exports={
         userHelpers.getCartProducts(uid).then((data) => {
             if (data) {
 
+                userHelpers.getCartTotal(uid).then((cartTotal)=>{
 
-                let userdata = req.session.userDetails
-                res.render('user/cart', { userdata, data })
+                    userHelpers.getEachProductTotal(uid).then((subtotal)=>{
+
+                        
+                   
+                    // subtotal=productTotal.map(item=>item.subtotal)
+                    
+                    let userdata = req.session.userDetails
+                    res.render('user/cart', { userdata, data ,cartTotal,subtotal})
+                    })
+
+
+                    })
+
+
+                
 
             }
         })
@@ -43,16 +57,34 @@ module.exports={
     },
     postCartCount: (req, res) => {
 
+
         console.log('ajax request recieved')
         console.log('ajax recieved count', req.body.quantity)
         let uid = req.session.userDetails._id
         let pid = req.body.pid
-        let count = req.body.quantity
+        let count = req.body.count
+        let quantity=req.body.quantity
         console.log('calling user helpers');
-        userHelpers.changeCartCount(uid, pid, count).then((response)=>{
-            if(response)
+        userHelpers.changeCartCount(uid,req.body).then((response)=>{
+            if(response.remove||response.update)
             {
-                res.json(response)
+                
+                
+                
+                userHelpers.getCartTotal(uid).then((cartTotal)=>{
+                    userHelpers.getEachProductTotal(uid).then((subtotal)=>{
+                        console.log('ajax return ',cartTotal,subtotal);
+                        let obj={
+                            response:response,
+                            cartTotal:cartTotal,
+                            subtotal:subtotal
+
+                        }
+                        res.json(obj)
+
+                    })
+                })
+               
             }else{
                 console.log('waitinggggggggggggggggggggggggggggggggg');
             }

@@ -17,9 +17,6 @@ let payment=require('../controllers/user-controller1/payment')
 let products=require('../controllers/user-controller1/product')
 let wallet=require('../controllers/user-controller1/wallet')
 let wishlist=require('../controllers/user-controller1/wishlist');
-const userController = require('../controllers/user-controller');
-const userHelpers = require('../helpers/user-helpers');
-const adminHelpers = require('../helpers/admin-helpers');
 const user = require('../controllers/user-controller1/user');
 
 /* GET users listing. */
