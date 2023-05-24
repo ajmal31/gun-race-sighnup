@@ -18,7 +18,7 @@ module.exports={
 
                         
                    
-                  userHelpers.filterCartTotal(uid)
+                 
                     
                     let userdata = req.session.userDetails
                     res.render('user/cart', { userdata, data ,cartTotal,subtotal})

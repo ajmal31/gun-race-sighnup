@@ -3,7 +3,7 @@ let adminHelpers = require('../../helpers/admin-helpers')
 const { ObjectId } = require('mongodb')
 
 
-module.exports={
+module.exports = {
 
     getCheckout: (req, res) => {
 
@@ -16,61 +16,34 @@ module.exports={
 
             userHelpers.getUserAddress(uid).then((userAddress) => {
 
-                console.log('card Data');
-                console.log(cartData);
-                console.log('userAdress');
-                console.log(userAddress);
+                userHelpers.getCartTotal(uid).then((cartTotal) => {
 
-                let subTotal = 0
-                let quantity = 0
-                let price = 0
-                let tempTotal = 0
-                let total = getTotal(cartData)
+                     total=cartTotal[0].cartTotal
+                    
 
-                 
-
-                function getTotal(cartData) {
+                    coupon = req.session.coupon
 
 
-                    for (let i = 0; i < cartData.length; i++) {
-                        price = Number(cartData[i].products.price)
+                    couponCodeErr = req.session.couponCodeErr
+                    req.session.couponCodeErr = false
 
-                        quantity = cartData[i].quantity
-                        subTotal = price * quantity
+                    minimumPurchase = req.session.minimumPurchase
+                    req.session.minimumPurchase = false
 
-                        tempTotal = tempTotal + subTotal
+                    minimumPurchaseAmount = req.session.minimumPurchaseAmount
+                    req.session.minimumPurchaseAmount = false
 
-                    }
-                    return tempTotal
-                }
+                    expired = req.session.expire
+                    req.session.expire = false
 
 
-                // userAddress=userAddress.address
-                console.log('userAddress')
-                console.log(userAddress)
+                    res.render('user/checkout', { userdata, total, cartData, userAddress, coupon, couponCodeErr, minimumPurchase, minimumPurchaseAmount, expired })
 
-                console.log('chekng..............................................................................');
-                console.log(total);
-                
-                coupon=req.session.coupon
-
-               
-                couponCodeErr=req.session.couponCodeErr
-                req.session.couponCodeErr=false
-
-                minimumPurchase=req.session.minimumPurchase  
-                req.session.minimumPurchase=false
-
-                minimumPurchaseAmount=req.session.minimumPurchaseAmount
-                req.session.minimumPurchaseAmount=false
-
-               expired=req.session.expire
-               req.session.expire=false
-
-               
-                res.render('user/checkout', { userdata, total, cartData, userAddress,coupon,couponCodeErr,minimumPurchase ,minimumPurchaseAmount,expired})
+                })
 
             })
+
+
         })
 
     },

@@ -179,9 +179,30 @@
                                         <tbody>
 
                                             <% cartData.forEach(element=> { %>
-                                                <% let price=Number(element.products.price) %>
-                                                    <% quantity=element.quantity %>
-                                                        <% let subtotal=price*quantity %>
+                                               
+
+                                                        <% let currentdate = new Date() %>
+                                                        <% let expiry = new Date(element.products.offerExpire) %>
+
+                                                        <% if (element.products.offerExpire) { %>
+                                                            <% if (currentdate < expiry) { %>
+                                                          <% var price=element.products.offerprice 
+                                                            var quantity=element.quantity
+                                                            var subtotal=price*quantity
+                                                          %>
+                                                           <% } else { %> 
+                                                            <% var price=element.products.price 
+                                                            var quantity=element.quantity
+                                                            var subtotal=price*quantity
+                                                          %>
+                                                            <% } %>
+                                                            <% } else { %>
+                      
+                                                              <% var price=element.products.price 
+                                                              var quantity=element.quantity
+                                                              var subtotal=price*quantity
+                                                            %>
+                                                            <% } %>
 
 
                                                             <tr>
