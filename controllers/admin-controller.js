@@ -26,40 +26,48 @@ module.exports = {
   getHome: (req, res) => {
 
     console.log('admin home ')
-    adminHelpers.getRevenue().then((revenue)=>{
+    adminHelpers.getRevenue().then((revenue) => {
 
-      adminHelpers.viewOrders().then((allOrders)=>{
+      adminHelpers.viewOrders().then((allOrders) => {
 
-        let ordersCount=allOrders.length
+        let ordersCount = allOrders.length
 
-        adminHelpers.getAllProducts().then((allProducts)=>{
+        adminHelpers.getAllProducts().then((allProducts) => {
 
-          let productsCount=allProducts.length
+          let productsCount = allProducts.length
 
-          adminHelpers.getAllCategories().then((allCategories)=>{
+          adminHelpers.getAllCategories().then((allCategories) => {
 
-            let categoryCount=allCategories.length
+            let categoryCount = allCategories.length
 
-            adminHelpers.getOnlinePayments().then((onlinePayments)=>{
+            adminHelpers.getOnlinePayments().then((onlinePayments) => {
 
-              onlinePaymentsCount=onlinePayments.length
-    
-              adminHelpers.getCashonDelivery().then((cashonDelivery)=>{
+              onlinePaymentsCount = onlinePayments.length
 
-                codCount=cashonDelivery.length
+              adminHelpers.getCashonDelivery().then((cashonDelivery) => {
 
-                adminHelpers.getWalletCount().then((wallet)=>{
+                codCount = cashonDelivery.length
 
-                  let walletCount=wallet.length
+                adminHelpers.getWalletCount().then((wallet) => {
 
-                  adminHelpers.getMonthlyData().then((monthlydetails)=>{
+                  let walletCount = wallet.length
+
+                  adminHelpers.getMonthlyData().then((monthlydetails) => {
 
                     console.log('monthly dataila controller reached succefully')
+                    const monthlyRevenueObject = {};
 
-                    res.render('admin/home',{revenue,ordersCount,productsCount,categoryCount,onlinePaymentsCount,codCount,walletCount,monthlydetails})
+                    for (const entry of monthlydetails) {
+                      const { total, months } = entry;
+                      monthlyRevenueObject[months.toLowerCase()] = total;
+                    }
+
+                    console.log(monthlyRevenueObject);
+
+                    res.render('admin/home', { revenue, ordersCount, productsCount, categoryCount, onlinePaymentsCount, codCount, walletCount, monthlyRevenueObject })
 
                   })
-                 
+
 
                 })
 
@@ -67,20 +75,20 @@ module.exports = {
               })
 
             })
-           
+
           })
-          
+
 
         })
-        
-       
+
+
 
       })
-     
-     
+
+
     })
 
-    
+
   },
   getLogout: (req, res) => {
     req.session.admin = false
@@ -119,19 +127,19 @@ module.exports = {
   postAddProducts: (req, res) => {
 
     let images = req.files.map(a => a.filename)
-    let body={
-      title:req.body.title,
-      description:req.body.description,
-      price:Number(req.body.price),
-      quantity:Number(req.body.quantity),
-      category:req.body.category, 
+    let body = {
+      title: req.body.title,
+      description: req.body.description,
+      price: Number(req.body.price),
+      quantity: Number(req.body.quantity),
+      category: req.body.category,
 
     }
-   
+
 
     adminHelpers.addProducts(body, images)
-   console.log(body.price,body.quantity,'twsting');
-   
+    console.log(body.price, body.quantity, 'twsting');
+
     console.log(images)
     res.redirect('/admin')
   },
@@ -162,21 +170,21 @@ module.exports = {
 
   },
   postUpdateProduct: (req, res) => {
- 
+
     let images = req.files.map(a => a.filename)
 
     console.log(images)
-    let body={
-      title:req.body.title,
-      description:req.body.description,
-      price:Number(req.body.price),
-      quantity:Number(req.body.quantity),
-      category:req.body.category, 
+    let body = {
+      title: req.body.title,
+      description: req.body.description,
+      price: Number(req.body.price),
+      quantity: Number(req.body.quantity),
+      category: req.body.category,
 
     }
     adminHelpers.updateProduct(body, req.params.id, images).then((data) => {
       if (data) {
-       
+
         res.redirect('/admin/viewProducts')
       }
     })
@@ -314,11 +322,11 @@ module.exports = {
   getAddCoupon: (req, res) => {
     console.log()
 
-    adminHelpers.getAllCoupons().then((response)=>{
+    adminHelpers.getAllCoupons().then((response) => {
 
-      res.render('admin/coupon',{response})
+      res.render('admin/coupon', { response })
     })
-    
+
   },
   postAddCoupon: (req, res) => {
 
@@ -350,76 +358,76 @@ module.exports = {
     })
 
   },
-  getProductsListing:(req,res)=>{
+  getProductsListing: (req, res) => {
 
-    adminHelpers.getAllProducts().then((allProducts)=>{
+    adminHelpers.getAllProducts().then((allProducts) => {
 
-      res.render('admin/listingProducts-offer',{allProducts})
+      res.render('admin/listingProducts-offer', { allProducts })
     })
   },
-  getMakeOffer:(req,res)=>{
+  getMakeOffer: (req, res) => {
 
-    let pid=req.params.id
-     adminHelpers.getOneProduct(pid).then((data)=>{
-      res.render('admin/add-offer',{data})
+    let pid = req.params.id
+    adminHelpers.getOneProduct(pid).then((data) => {
+      res.render('admin/add-offer', { data })
 
     })
-    
+
   },
-  postAddOffer:(req,res)=>{
-   previuosUrl=req.header('Referer')
-   console.log(req.params.id)
+  postAddOffer: (req, res) => {
+    previuosUrl = req.header('Referer')
+    console.log(req.params.id)
     console.log(req.body)
-    let pid=req.params.id
-    let offerPrice=req.body.offerprice
-    let offerExpire=req.body.offerexpire
-    let images=[]
-    adminHelpers.addOfferPriceProduct(pid,offerPrice,offerExpire).then((response)=>{
+    let pid = req.params.id
+    let offerPrice = req.body.offerprice
+    let offerExpire = req.body.offerexpire
+    let images = []
+    adminHelpers.addOfferPriceProduct(pid, offerPrice, offerExpire).then((response) => {
 
       res.redirect(previuosUrl)
     })
-    
-    
+
+
   },
 
-  getCategoryOffer:(req,res)=>{
+  getCategoryOffer: (req, res) => {
 
-    let catId=req.params.id
+    let catId = req.params.id
     console.log(catId)
-    res.render('admin/categoryOffer',{catId})
+    res.render('admin/categoryOffer', { catId })
   },
-  postAddCatOffer:(req,res)=>{
+  postAddCatOffer: (req, res) => {
 
-    let catId=req.params.id
-    let percentage=req.body.percentage
-    let date=req.body.offerexpire
-   
-      
-      adminHelpers.findOneCategory(catId).then((category)=>{
+    let catId = req.params.id
+    let percentage = req.body.percentage
+    let date = req.body.offerexpire
 
-        catName=category.name
-        
-        adminHelpers.addOfferCat(catName,percentage,date).then((response)=>{
-       
 
-        })
+    adminHelpers.findOneCategory(catId).then((category) => {
 
-      
+      catName = category.name
+
+      adminHelpers.addOfferCat(catName, percentage, date).then((response) => {
+
+
       })
-      
-    
+
+
+    })
+
+
   },
-  deleteCoupon:(req,res)=>{
+  deleteCoupon: (req, res) => {
 
-    previuosUrl=req.header('Referer')
+    previuosUrl = req.header('Referer')
 
-    adminHelpers.deleteCoupon(req.params.id).then((response)=>{
-     
+    adminHelpers.deleteCoupon(req.params.id).then((response) => {
+
       res.redirect(previuosUrl)
-      
+
     })
   }
-  
+
 }
 
 

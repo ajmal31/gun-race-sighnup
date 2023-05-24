@@ -947,6 +947,107 @@ module.exports = {
     })
   },
 
+  filterCartTotal:(uid)=>{
+    return new Promise((resolve,reject)=>{
+
+      db.get().collection(collection.cartCollection).aggregate([
+        {
+          $match: {
+            userId: ObjectId(uid)
+          }
+        },
+        {
+          $unwind: '$productList'
+        },
+        {
+          $project: {
+            userId: '$userId',
+            pid: '$productList.pid',
+            quantity: '$productList.quantity',
+          },
+        },
+        {
+          $lookup: {
+            from: collection.productCollection,
+            localField: 'pid',
+            foreignField: '_id',
+            as: 'products'
+          }
+        },
+        {
+          $project: {
+            quantity: 1,
+            productPrice: {
+              '$arrayElemAt': ['$products.price', 0]
+            },
+            offerPrice: {
+              '$arrayElemAt': ['$products.offerprice', 0]
+            },
+            offerExpireDate: {
+              '$arrayElemAt': ['$products.offerExpire', 0]
+            }
+          }
+        },
+        {
+          $addFields: {
+            productPrice: {
+              '$cond': [
+                {
+                  '$and': [
+                    {
+                      '$not': {
+                        '$isNull': '$offerPrice'
+                      }
+                    },
+                    {
+                      '$lte': [
+                        '$offerExpireDate',
+                        new Date()
+                      ]
+                    }
+                  ]
+                },
+                '$offerPrice',
+                '$productPrice'
+              ]
+            }
+          }
+        },
+        {
+          $group: {
+            _id: null,
+            subtotal: {
+              '$sum': {
+                '$multiply': [
+                  '$quantity',
+                  '$productPrice'
+                ]
+              }
+            }
+          }
+        },
+        {
+          $project: {
+            cartTotal: {
+              '$sum': '$subtotal'
+            }
+          }
+        }
+      ])
+      .toArray((err,docs)=>{
+        if(err)
+        {
+          console.log('filter cart total not working')
+          console.log(err);
+        }else{
+          console.log('filter cart total success')
+          console.log(docs)
+        }
+      })
+      
+    })
+  },
+
   getEachProductTotal: (uid) => {
   
     return new Promise((resolve,reject)=>{

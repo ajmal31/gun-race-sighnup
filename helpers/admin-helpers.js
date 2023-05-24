@@ -583,7 +583,7 @@ module.exports = {
   getMonthlyData:()=>{
     return new Promise(async(resolve,reject)=>{
      
-      let monthlyRevenue = await db.get().collection(collection.ordersCollection).aggregate([
+      const monthlyRevenue = await db.get().collection(collection.ordersCollection).aggregate([
         {
           $group: {
             _id: {
@@ -596,9 +596,9 @@ module.exports = {
         },
         {
           $project: {
-            month: "$_id.month",
-            _id: 0,
-            total: 1
+          month: "$_id.month",
+          _id: 0,
+          total: 1
           }
         },
         {
@@ -611,22 +611,63 @@ module.exports = {
             months: {
               $arrayElemAt: [
                 [
-                  "",
                   "January", "February", "March", "April", "May", "June",
                   "July", "August", "September", "October", "November", "December"
                 ],
-                "$month"
+                { $subtract: ["$month", 1] }
               ]
             },
-            total: 1
+            total: {
+              $ifNull: ["$total", 0]
+            }
+          }
+        },
+        {
+          $group: {
+            _id: null,
+            data: {
+              $push: {
+                total: "$total",
+                months: "$months"
+              }
+            }
+          }
+        },
+        {
+          $project: {
+            _id: 0,
+            data: {
+              $setUnion: [
+                "$data",
+                [
+                  { total: 0, months: "January" },
+                  { total: 0, months: "February" },
+                  { total: 0, months: "March" },
+                  { total: 0, months: "April" },
+                  { total: 0, months: "May" },
+                  { total: 0, months: "June" },
+                  { total: 0, months: "July" },
+                  { total: 0, months: "August" },
+                  { total: 0, months: "September" },
+                  { total: 0, months: "October" },
+                  { total: 0, months: "November" },
+                  { total: 0, months: "December" }
+                ]
+              ]
+            }
+          }
+        },
+        {
+          $unwind: "$data"
+        },
+        {
+          $replaceRoot: {
+            newRoot: "$data"
           }
         }
       ]).toArray();
-      
-      console.log('Monthly revenue data:');
       console.log(monthlyRevenue);
       resolve(monthlyRevenue);
-             
       
   
     })

@@ -52,10 +52,28 @@
                                         <%= element.products.title %>
                                       </a></h5>
                                   </td>
-                                  <td class="col-6 col-md-2 price" data-title="Price">
-                                    <p id="price">₹<%= element.products.price %>
-                                    </p>
-                                  </td>
+                                  <% let currentdate = new Date() %>
+                                  <% let expiry = new Date(element.products.offerExpire) %>
+                                  
+                                  <% if (element.products.offerExpire) { %>
+                                    <% if (currentdate < expiry) { %>
+                                     
+                                      <td class="col-6 col-md-2 price" data-title="Price">
+                                        <p id="price">₹<%= element.products.offerprice %></p>
+                                      </td>
+                                    <% } else { %>
+                                      
+                                      <td class="col-6 col-md-2 price" data-title="Price">
+                                        <p id="price">₹<%= element.products.price %></p>
+                                      </td>
+                                    <% } %>
+                                  <% } else { %>
+                                  
+                                    <td class="col-6 col-md-2 price" data-title="Price">
+                                      <p id="price">₹<%= element.products.price %></p>
+                                    </td>
+                                  <% } %>
+                                 
                                   <!-- <td class="col-6 col-md-2 text-center">
                                                
                                                   <input class="itemqty form-control" type="number" name="qty" id="quantity" onchange="countupdate('<%=element.pid%>')" value="<%=element.quantity%>" min="1" max="">
@@ -66,29 +84,64 @@
                                   <!-- <td class="col-6 col-md-2 text-center">
                                     <input class="itemqty form-control" type="number" name="qty" id="quantity_<%=element.pid%>" onchange="countupdate('<%=element.pid%>')" value="<%=element.quantity%>" min="1" max="<%= element.products.quantity %>">
                                   </td> -->
-                                  
+                                  <% if (element.products.offerExpire) { %>
+                                    <% if (currentdate < expiry) { %>
 
                                     <td class="col-6 col-md-2 text-center">
 
-                                      <button class="cart-item-count mr-3 " style="background-color: dodgerblue;font-weight: bold; color: white; border-color: aliceblue;" onclick="countupdate( '<%=element.pid%>','<%=element.products.price%>',-1 )" > - </button>
+                                      <button class="cart-item-count mr-3 " style="background: none; border: none; font-weight: bolder; font-size:x-large;" onclick="countupdate( '<%=element.pid%>','<%=element.products.offerprice%>',-1 )" > &#8722; </button>
                                     
-                                       <span id="<%= element.pid %>"><%= element.quantity %></span>
-                                       <button style="background-color: dodgerblue; color: white; border-color: aliceblue;"  class="cart-item-count ml-3" onclick="countupdate( '<%=element.pid%>','<%=element.products.price%>',1 )" > + </button>
+                                       <span id="<%= element.pid %>" style="background: none; border: none; font-weight: bolder; font-size:large;"><%= element.quantity %></span>
+                                       <button style="background: none; border: none; font-weight: bolder; font-size:x-large;" class="cart-item-count ml-3" onclick="countupdate( '<%=element.pid%>','<%=element.products.offerprice%>',1 )" > &#43; </button>
   
                                     </td>
-                                 
-                                    
-                                     
-                                    
-                                  
+                                    <% } else { %>  
+
+                                      <td class="col-6 col-md-2 text-center">
+
+                                        <button class="cart-item-count mr-3 " style="background: none; border: none; font-weight: bolder; font-size:x-large;" onclick="countupdate( '<%=element.pid%>','<%=element.products.price%>',-1 )" > &#8722; </button>
+                                      
+                                        <span id="<%= element.pid %>" style="background: none; border: none; font-weight: bolder; font-size:large;"><%= element.quantity %></span>
+                                        <button style="background: none; border: none; font-weight: bolder; font-size:x-large;" class="cart-item-count ml-3" onclick="countupdate( '<%=element.pid%>','<%=element.products.price%>',1 )" > &#43; </button>
+    
+                                      </td>
+                                      <% } %>
+                                     <% } else { %>
+                                      <td class="col-6 col-md-2 text-center">
+
+                                        <button class="cart-item-count mr-3 " style="background: none; border: none; font-weight: bolder; font-size:x-large;" onclick="countupdate( '<%=element.pid%>','<%=element.products.price%>',-1 )" > &#8722; </button>
+                                      
+                                        <span id="<%= element.pid %>" style="background: none; border: none; font-weight: bolder; font-size:large;"><%= element.quantity %></span>
+                                        <button style="background: none; border: none; font-weight: bolder; font-size:x-large;"  class="cart-item-count ml-3" onclick="countupdate( '<%=element.pid%>','<%=element.products.price%>',1 )" > &#43; </button>
+    
+                                      </td>
+
+                                      <% } %>
                                   
                                   <td id="subtotal" class="col-6 col-md-2 text-right" data-title="Subtotal">
-                                    <% let price=element.products.price 
-                                      let quantity=element.quantity
-                                      let subtotal=price*quantity
+                                    <% if (element.products.offerExpire) { %>
+                                      <% if (currentdate < expiry) { %>
+                                    <% var price=element.products.offerprice 
+                                      var quantity=element.quantity
+                                      var subtotal=price*quantity
                                     %>
+                                     <% } else { %> 
+                                      <% var price=element.products.price 
+                                      var quantity=element.quantity
+                                      var subtotal=price*quantity
+                                    %>
+                                      <% } %>
+                                      <% } else { %>
+
+                                        <% var price=element.products.price 
+                                        var quantity=element.quantity
+                                        var subtotal=price*quantity
+                                      %>
+                                      <% } %>
                                       <!-- <input class="text-center form-control" name="subtotal" id="subtotal-input" value="<%=subtotal%>" readonly> -->
-                                      <span class="text-center" id="subtotal-span"><%=subtotal%></span>
+                                      <!-- <span class="text-center" id="subtotal<%= element.pid %>"><%=subtotal%></span> -->
+                                      <span class="text-center" id="subtotal_span<%= element.pid %>"><%= subtotal %></span>
+                                      <% console.log('span',element.pid) %>
 
                                     
                                     
@@ -247,7 +300,9 @@ function countupdate(pid, price, count) {
         document.getElementById('temp-cart').innerHTML = response.cartTotal[0].cartTotal;
 
         let subtotal = (Number(quantity) + Number(count)) * price;
-        document.getElementById('subtotal-span').textContent = subtotal;
+        // document.getElementById('subtotal').textContent = subtotal;
+        document.getElementById('subtotal_span'+pid).textContent = subtotal;
+         console.log('inside of the ajax',element.pid)
       }
     }
   });

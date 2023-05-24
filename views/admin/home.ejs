@@ -187,43 +187,44 @@
       });
     });
     
-    
+    // monthlyRevenueObject
     // Set data
+    console.log('frontend')
     var data = [{
-      // month:  <%= monthlydetails[0].months %>,
-      // value: <%= monthlydetails[0].total %>,
-      "country": "China",
-      "value": 1882
+       "month": 'january' ,
+       "value": <%=monthlyRevenueObject.january%>,
+      "country": "february",
+      "value": <%=monthlyRevenueObject.february%>
     }, {
-      "country": "China",
-      "value": 1882
+      "country": "march",
+      "value": <%=monthlyRevenueObject.march%>
     }, {
-      "country": "Japan",
-      "value": 1809
+      "country": "April",
+      "value": <%=monthlyRevenueObject.april%>
     }, {
-      "country": "Germany",
-      "value": 1322
+      "country": "May",
+      "value": <%=monthlyRevenueObject.may%>
     }, {
-      "country": "UK",
-      "value": 1122
+      "country": "June",
+      "value": <%=monthlyRevenueObject.june%>
     }, {
-      "country": "France",
-      "value": 1114
+      "country": "July",
+      "value": <%=monthlyRevenueObject.july%>
     }, {
-      "country": "India",
-      "value": 984
+      "country": "August",
+      "value": <%=monthlyRevenueObject.august%>
     }, {
-      "country": "Spain",
-      "value": 711
+      "country": "September",
+      "value": <%=monthlyRevenueObject.september%>
     }, {
-      "country": "Netherlands",
-      "value": 665
+      "country": "October",
+      "value": <%=monthlyRevenueObject.october%>
     }, {
-      "country": "South Korea",
-      "value": 443
+      "country": "Novemeber",
+      "value": <%=monthlyRevenueObject.november%>
     }, {
-      "country": "Canada",
-      "value": 441
+      "country": "December",
+      "value": <%=monthlyRevenueObject.december%>
     }];
     
     xAxis.data.setAll(data);
