@@ -409,7 +409,10 @@
                 success: (order) => {
 
                     
-
+                   if(order.amountExceed)
+                   {
+                    alert('sorry, you online purchasing amount is exceed')
+                   }
 
                     
                    console.log("jkjkjkljlkjkljlkjkl",order.status,'kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk')
@@ -422,11 +425,15 @@
                         console.log(' razorpay payment functioncalling');
 
 
-                        alert('enter razorapy ')
+                       
                         razorpayPayment(order.order)
                     }else if(order.status===undefined)
                     {
-                        alert('wallet amount not enough in this purchase')
+                        if(!order.amountExceed)
+                        {
+                            alert('wallet amount not enough in this purchase')
+                        }
+                       
                     }
 
                 }

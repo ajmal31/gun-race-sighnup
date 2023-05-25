@@ -77,11 +77,25 @@ module.exports = {
         }
         else {
 
-            console.log('jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj')
+            
+            if(payment==='razorpay'&&totalAmount>=500000)
+                   {
+                     let obj1={
+                        amountExceed:true
+                     }
+                     
+
+                     res.json(obj1)
+                   }else{
+
+                   
             userHelpers.getCartProducts(uid).then((cartProducts) => {
 
                 userHelpers.getUserSpecificAddress(addressId).then((userAddress) => {
 
+                   
+
+                   
 
 
                     userHelpers.placeOrder(cartProducts, userAddress, uid, totalAmount, payment).then((orderId) => {
@@ -129,6 +143,7 @@ module.exports = {
                 })
 
             })
+        } 
 
         }
 
