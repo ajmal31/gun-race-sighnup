@@ -1,4 +1,4 @@
-let userHelpers = require('../helpers/user-helpers')
+let userHelpers = require('../helpers/userHelper')
 let adminHelpers = require('../helpers/admin-helpers')
 let db = require('../config/connection')
 let collections = require('../config/collections')
@@ -369,7 +369,7 @@ module.exports = {
 
     let pid = req.params.id
     adminHelpers.getOneProduct(pid).then((data) => {
-      res.render('admin/add-offer', { data })
+      res.render('admin/addOffer', { data })
 
     })
 
@@ -379,7 +379,7 @@ module.exports = {
     console.log(req.params.id)
     console.log(req.body)
     let pid = req.params.id
-    let offerPrice = req.body.offerprice
+    let offerPrice = Number(req.body.offerprice)
     let offerExpire = req.body.offerexpire
     let images = []
     adminHelpers.addOfferPriceProduct(pid, offerPrice, offerExpire).then((response) => {

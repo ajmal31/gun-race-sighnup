@@ -106,7 +106,7 @@
                                     <td><%= element.discount %> </td>
                                     <td><%= element.limitAmount %> </td>
                                     <td><%= element.minimumPurchasingAmount %></td>
-                                    <td>dontknow</td>
+                                    <td><%= element.expiryDate %></td>
                                     <td>
                                         
                                         <a href="/admin/deleteCoupon/<%= element._id %>" onclick="return confirm('Are you sure you want to delete this coupon? Click ok to confirm');" class="btn bg-danger"  ><i class="ri-delete-bin-5-line"></i></a>
@@ -155,4 +155,4 @@
     hide('alert')
 </script>
 
-<%- include('../layouts/admin-footer') %>
+<%-include('../layouts/adminFooter')%>

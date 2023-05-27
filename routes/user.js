@@ -6,18 +6,18 @@ var express = require('express');
 var router = express.Router();
 const auth=require('../auth/userAuth')
 //after requiring
-let users=require('../controllers/user-controller1/user')
-let address=require('../controllers/user-controller1/address')
-let cart=require('../controllers/user-controller1/cart')
-let checkout=require('../controllers/user-controller1/checkout')
-let coupon=require('../controllers/user-controller1/coupon')
-let orders=require('../controllers/user-controller1/orders')
-let otp=require('../controllers/user-controller1/otp')
-let payment=require('../controllers/user-controller1/payment')
-let products=require('../controllers/user-controller1/product')
-let wallet=require('../controllers/user-controller1/wallet')
-let wishlist=require('../controllers/user-controller1/wishlist');
-const user = require('../controllers/user-controller1/user');
+const users=require('../controllers/user-controller1/user')
+const address=require('../controllers/user-controller1/address')
+const cart=require('../controllers/user-controller1/cart')
+const checkout=require('../controllers/user-controller1/checkout')
+const coupon=require('../controllers/user-controller1/coupon')
+const orders=require('../controllers/user-controller1/orders')
+const otp=require('../controllers/user-controller1/otp')
+const payment=require('../controllers/user-controller1/payment')
+const products=require('../controllers/user-controller1/product')
+const wallet=require('../controllers/user-controller1/wallet')
+const wishlist=require('../controllers/user-controller1/wishlist');
+
 
 /* GET users listing. */
 
@@ -98,8 +98,8 @@ router.post('/addAddress',auth.userAuthentication , address.postAddAddress)
 //POST PLACE ORDER 
 router.post('/placeOrder',auth.userAuthentication,orders.postPlaceOrder)
 
-//GET ALL ORDERS
-router.get('/getAllOrders',auth.userAuthentication, orders.getAllOrders)
+// //GET ALL ORDERS
+// router.get('/getAllOrders',auth.userAuthentication, orders.getAllOrders)
 
 //VIEW MORE
 router.get('/viewmore/:id',auth.userAuthentication, orders.getViewmore)
@@ -129,13 +129,20 @@ router.get('/returnOrder/:id',auth.userAuthentication,orders.getReturnOrder)
 router.get('/wallet',auth.userAuthentication,wallet.getWallet)
 
 //CHANGE PASSWORD REQUESTIN
-router.get('/changePassword',auth.userAuthentication,user.getChangePassword)
+router.get('/changePassword',auth.userAuthentication,users.getChangePassword)
 
 //POST CHANGE PASSWORD
-router.post('/checkCurrentPassword',auth.userAuthentication,user.checkCurrentPassword)
+router.post('/checkCurrentPassword',auth.userAuthentication,users.checkCurrentPassword)
 
 //UPDATE PASSWORD
-router.post('/updatePassword',auth.userAuthentication,user.updatePassword)
+router.post('/updatePassword',auth.userAuthentication,users.updatePassword)
+
+
+router.get('/removeWishProduct/:id',auth.userAuthentication,wishlist.removeProduct)
+
+
+//REMOVE USER
+router.get('/removeUser/:id',auth.userAuthentication,users.removeUser)
 // router.get('/test-home',(req,res)=>{
 //     adminHelpers.getAllCategories().then((data)=>{
 //         let userdata=req.session.userDetails

@@ -187,10 +187,10 @@
                                                     
                                                      
                                                        
-                                                        
+                                                        <% date=element.date+'' %>
                                                         <tr>
                                                             <td>&#8226;</td>
-                                                            <td><%=element. date %></td>
+                                                            <td><%=date.substring(0,16)%></td>
                                                             <td><%= element.products.length %> </td>  
                                                             <td><%=element.payment_method  %> </td>
                                                             <td><%=element. total_amount %></td>
@@ -278,9 +278,15 @@
 
                                 <div class="tab-pane fade" id="address" role="tabpanel" aria-labelledby="address-tab">
                                     
+                                    <% if (address.length===0) { %>
+                                     
                                         <div>
                                             <h6 class="text-danger">You haven't added an address yet, Please add an address.</h6>
                                         </div>
+                                        <% }else{%>
+
+                                            
+                                        
                                      
                                    
                                     <div class="row">
@@ -336,7 +342,7 @@
                                        
                                     </div>
                                    
-
+                                    <% } %>
 
                                     <!-- ADDRESS LISTING CONTENT ENDING -->
 
@@ -505,7 +511,7 @@
                                            
                                             <h6>Remove account</h6>
                                             <small class="text-muted d-block" style="width:70%">Once you delete your account, there is no going back.</small>
-                                            <a class="btn float-center btn-light rounded btn-sm font-md" href="#">Deactivate</a>
+                                            <a class="btn float-center btn-light rounded btn-sm font-md" href="/removeUser/<%= userdata._id %>">Deactivate</a>
                                         </article>
                                     </div> <!-- col.// -->
                                 </div> <!-- row.// -->

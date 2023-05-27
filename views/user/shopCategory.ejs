@@ -60,15 +60,34 @@
                                         <span>86%</span>
                                     </span>
                                 </div>
-
+                                <% let currentdate=new Date() %>
+                                <% let expiry=new Date(element.offerExpire) %>
+                                <% console.log('frontent'); %>
+                                <% console.log(currentdate); %>
+                                <% console.log(element.offerExpire); %>
+                                <% console.log(expiry); %>
+                                <% if (element.offerExpire) { %>
+                                <% if (currentdate < expiry) { %>
                                 <div class="product-price">
-                                    <span style="color: green;">
-                                        <%= element.price %>
-                                    </span>
-                                    <span class="old-price">$245.8</span>
-                                    <!-- <span style="color: green;">$2465</span> -->
+                                    <span style="color: green;">Offer-Price <%= element.offerprice %></span>
+                                    <span class="old-price"><h5>Orginal Price <%= element.price %></h5></span>
                                 </div>
                                 <div class="product-action-1 show">
+                                    <a aria-label="Add To Cart" class="action-btn hover-up"
+                                        href="/addToCart/<%= element._id %>"><i class="fi-rs-shopping-bag-add"></i></a>
+                                </div>
+                                <% } else { %>
+                                <% console.log('invalid date case') %>
+                                <div class="product-price">
+                                    <span style="color: green;"><%= element.price %></span>
+                                </div>
+                                <% } %>
+                                <% } else { %>
+                                <% console.log('feild is not existing'); %>
+                                <div class="product-price">
+                                    <span style="color: green;"><%= element.price %></span>
+                                </div>
+                                <% } %>                                <div class="product-action-1 show">
                                     <a aria-label="Add To Cart" class="action-btn hover-up" href="/addToCart/<%= element._id %> %>"><i
                                             class="fi-rs-shopping-bag-add"></i></a>
                                 </div>

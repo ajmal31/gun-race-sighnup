@@ -1,5 +1,7 @@
-let userHelpers = require('../../helpers/user-helpers')
+// const userHelpers = require('../../helpers/user-helpers')
+let userHelpers = require('../../helpers/userHelper')
 let adminHelpers = require('../../helpers/admin-helpers')
+let hell = require('../../helpers/userHelper')
 const { ObjectId } = require('mongodb')
 
 
@@ -18,14 +20,16 @@ module.exports={
 
 
         let catName = req.params.id
+        console.log(catName)
+       
         userHelpers.shop(catName).then((data) => {
-
+  
             if (data) {
 
 
 
                 let userdata = req.session.userDetails
-                res.render('user/shop_1', { data, userdata })
+                res.render('user/shopCategory', { data, userdata })
 
             } else {
 
@@ -49,6 +53,9 @@ module.exports={
         })
     },
     getAllProducts: (req, res) => {
+
+      
+
         adminHelpers.getAllProducts().then((response) => {
             if (response) {
                 let userdata = req.session.userDetails

@@ -1,6 +1,6 @@
-let userHelpers = require('../../helpers/user-helpers')
-let adminHelpers = require('../../helpers/admin-helpers')
-let checking = require('../../checking/userBlock')
+// let userHelpers = require('../../helpers/user-helpers')
+const userHelpers = require('../../helpers/userHelper')
+const checking = require('../../checking/userBlock')
 const { ObjectId } = require('mongodb')
 
 module.exports={
@@ -22,8 +22,8 @@ module.exports={
                 userId=data.insertedId
                 userHelpers.createWallet(userId).then((response)=>{
 
-                    req.session.userDetails = req.body
-                    res.redirect('/')
+                    
+                    res.redirect('/login')
                 })
                 
             })
@@ -146,6 +146,15 @@ module.exports={
     userHelpers.updatePassword(uid,newPassword).then((response)=>{
 
         res.redirect('/')
+    })
+   },
+   removeUser:(req,res)=>{
+
+    previousUrl=req.header('Referer')
+    let uid=req.params.id
+    userHelpers.removeUser(uid).then((response)=>{
+
+        res.redirect(previousUrl)
     })
    }
 }

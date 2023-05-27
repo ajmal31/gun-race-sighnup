@@ -28,7 +28,7 @@
                 <div class="table-responsive">
 
                   <table class="table shopping-summery text-center clean">
-                    <h4 style="text-align:right"><a href="/getAllOrders"><u>Your Orders</u></a></h4>
+                    
                     <thead>
                       <tr class="main-heading">
                         <th scope="col">Image</th>
@@ -45,8 +45,8 @@
                           <% console.log(index) %>
                           
                                 <tr>
-                                  <td class="col-12 col-md-2 image"><img src="/images/<%=element.products.image[0]%>"
-                                      alt="#"></td>
+                                  <td class="col-12 col-md-2 image"><a href="/productDetails/<%= element.pid %>"><img src="/images/<%=element.products.image[0]%>"
+                                      alt="#"></a></td>
                                   <td class="col-12 col-md-3 product-des">
                                     <h5 class="product-name"><a href="/ " class="text-muted">
                                         <%= element.products.title %>
@@ -180,7 +180,7 @@
 
                             <tr>
                               <td class="cart_total_label"> </td>
-                              <td class="cart_total_amount"><span class="font-lg fw-900 text-brand" id="temp-cart">₹<%= cartTotal[0].cartTotal %>
+                              <td class="cart_total_amount"><span class="font-lg fw-900 text-brand" id="temp-cart">₹ <%= cartTotal[0].cartTotal %> 
                                 </span></td>
                             </tr>
                             <tr>
@@ -191,7 +191,7 @@
                             <tr>
                               <td class="cart_total_label">Total</td>
                               <td class="cart_total_amount"><strong><span class="font-xl fw-900 text-brand" id="cart-total" >
-                                <%= cartTotal[0].cartTotal %>
+                                <%=cartTotal[0].cartTotal  %>  
                                   </span></strong></td>
                             </tr>
 

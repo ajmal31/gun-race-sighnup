@@ -27,7 +27,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-lg-9">
-                        <div class="product-detail accordion-detail">
+                        <div class="product-detail accordion-detail mb-5 ">
                             <div class="row mb-50">
                                 <div class="col-md-6 col-sm-12 col-xs-12">
                                     <div class="detail-gallery">
@@ -132,59 +132,67 @@
                                                     Policy</li>
                                                 <li><i class="fi-rs-credit-card mr-5"></i> Cash on Delivery available
                                                 </li>
+                                                <% if (data.quantity<5) { %>
 
-                                                <li class="mb-10 ml-5 text-danger"><i class="ri-stock-line"></i>Only <%= data.quantity %> left! </li>
 
+                                                    <li class="mb-10 ml-5 text-danger"><i class="ri-stock-line"></i>Only
+                                                        <%= data.quantity %> left! </li>
+                                                    <% } %>
 
                                             </ul>
                                         </div>
-                                      
+
                                         <% if (data.quantity>0) { %>
-                                            
-                                          
-                                            
-                                       
-                                        <form action="/addToCart/<%= data._id %>"method="get">
-                                            <input type="hidden" name="offer" value="0" id="">
-                                            <div class="detail-extralink">
 
 
-                                                
-                                                <input type="number" name="qty" id="quantity"
-                                                    onclick="countUpdate('<%=data._id %>')" value="1"
-                                                    style="width: 60px;" min=1 max="<%= data.quantity %>">
 
 
-                                    
+                                            <form action="/addToCart/<%= data._id %>" method="get">
+                                                <input type="hidden" name="offer" value="0" id="">
+                                                <div class="detail-extralink">
 
-                                                <div class="product-extra-link2">
-                                                    <form action="/addToCart/<%= data._id %>"  method="get" >
-                                                        <button type="submit"class="button button-add-to-cart"> Add to cart</button></a>
 
+
+                                                    <!-- <input type="number" name="qty" id="quantity"
+                                                        onclick="countUpdate('<%=data._id %>')" value="1"
+                                                        style="width: 60px;" min=1 max="<%= data.quantity %>"> -->
+
+
+
+
+                                                    <div class="product-extra-link2">
+                                                        <form action="/addToCart/<%= data._id %>" method="get">
+                                                            <button type="submit" class="button button-add-to-cart"> Add
+                                                                to cart</button></a>
+
+                                                        </form>
+
+                                            </form>
+                                            <% } else { %>
+
+                                                <button class="btn out-of-stock btn-lg"
+                                                    style="background-color: red; color: white; border: none; cursor: pointer;  cursor: none;">Out
+                                                    of Stock</button>
+
+
+
+                                                <% } %>
+
+
+
+                                                    <!-- <a aria-label="Add To Wishlist" class="action-btn hover-up" href="#" style="background-color:#088178;color:white;" ><i class="fi-rs-heart"></i></a> -->
+
+                                                    <a href="/addWishList/<%= data._id %>" aria-label="Add To Wishlist"
+                                                        class="action-btn hover-up" id="wishbtn"><i
+                                                            class="fi-rs-heart"></i></a>
+
+                                                    <form action="" method="post">
+                                                        <button type="submit" id="wishbtn1"
+                                                            style="display: none;"></button>
                                                     </form>
 
-                                        </form>
-                                       <% } else { %>
 
-                                        <button  class="btn out-of-stock btn-lg" style="background-color: red; color: white; border: none; cursor: pointer;  cursor: none;">Out of Stock</button>
-
-
-                                            
-                                       <% } %>
-
-
-
-                                        <!-- <a aria-label="Add To Wishlist" class="action-btn hover-up" href="#" style="background-color:#088178;color:white;" ><i class="fi-rs-heart"></i></a> -->
-
-                                        <a href="/addWishList/<%= data._id %>" aria-label="Add To Wishlist"
-                                            class="action-btn hover-up" id="wishbtn"><i class="fi-rs-heart"></i></a>
-
-                                        <form action="" method="post">
-                                            <button type="submit" id="wishbtn1" style="display: none;"></button>
-                                        </form>
-
-                                        
-                                        <!-- <button class="button bg-danger button-add-to-cart" disabled>Out of stock</button>
+                                                    <!-- <button class="button bg-danger button-add-to-cart" disabled>Out of stock</button>
                                                 <div class="product-extra-link2"> 
                                                  
                                                     <a aria-label="Add To Wishlist" class="action-btn hover-up" href="3" style="background-color:#088178;color:white;" ><i class="fi-rs-heart"></i></a>
@@ -210,6 +218,11 @@
 
 
                     </div>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
 
                     <div class="tab-style3">
                         <ul class="nav nav-tabs text-uppercase">

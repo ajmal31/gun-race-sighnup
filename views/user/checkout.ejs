@@ -216,7 +216,7 @@
                                                                     <h5><a href="shop-product-full.html">
                                                                             <%= element.products.title %>
                                                                         </a></h5> <span class="product-qty">x
-                                                                        quantity</span>
+                                                                        <%= element.quantity %></span>
                                                                     <input type="hidden" name="" id="reload1" value="1">
 
                                                                 </td>
@@ -275,49 +275,37 @@
                                     </div>
                                     <div class="payment_option">
                                         <div class="custome-radio">
-                                            <input class="form-check-input" required="" type="radio" name="payment_mode"
-                                                id="exampleRadios3" checked="" value="razorpay">
-                                            <label class="form-check-label" for="exampleRadios3"
-                                                data-bs-toggle="collapse" aria-controls="bankTranfer">RazorPay</label>
+                                            <input class="form-check-input" required="" type="radio" name="payment_mode" id="exampleRadios3"
+                                                checked="" value="razorpay">
+                                            <label class="form-check-label" for="exampleRadios3" data-bs-toggle="collapse"
+                                                aria-controls="bankTranfer">RazorPay</label>
                                             <div class="form-group collapse in" id="bankTranfer">
-                                                <p class="text-muted mt-5">There are many variations of passages of
-                                                    Lorem Ipsum available, but the majority have suffered alteration.
-                                                </p>
+                                                <p class="text-muted mt-5">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration.</p>
                                             </div>
                                         </div>
-                                        <!-- <div class="custome-radio">
-                                        <input class="form-check-input" required="" type="radio" name="payment_mode" id="exampleRadios4" checked="" value="paypal">
-                                        <label class="form-check-label" for="exampleRadios4" data-bs-toggle="collapse"  aria-controls="checkPayment">Paypal</label>
-                                        <div class="form-group collapse in" id="checkPayment">
-                                            <p class="text-muted mt-5">Please send your cheque to Store Name, Store Street, Store Town, Store State / County, Store Postcode. </p>
-                                        </div>
-                                    </div> -->
+                                
                                         <div class="custome-radio">
-                                            <input class="form-check-input" required="" type="radio" name="payment_mode"
-                                                id="exampleRadios5" checked="" value="COD">
-                                            <label class="form-check-label" for="exampleRadios5"
-                                                data-bs-toggle="collapse" aria-controls="paypal">Cash on
-                                                delivery</label>
+                                            <input class="form-check-input" required="" type="radio" name="payment_mode" id="exampleRadios4"
+                                                value="COD">
+                                            <label class="form-check-label" for="exampleRadios4" data-bs-toggle="collapse"
+                                                aria-controls="paypal">Cash on delivery</label>
                                             <div class="form-group collapse in" id="paypal">
-                                                <p class="text-muted mt-5">Pay via PayPal; you can pay with your credit
-                                                    card if you don't have a PayPal account.</p>
+                                                <p class="text-muted mt-5">Pay via PayPal; you can pay with your credit card if you don't have a PayPal account.</p>
                                             </div>
                                         </div>
+                                
                                         <div class="custome-radio">
-                                            <input class="form-check-input" required="" type="radio" name="payment_mode"
-                                                id="exampleRadios5" checked="" value="wallet">
-                                            <label class="form-check-label" for="exampleRadios5"
-                                                data-bs-toggle="collapse" aria-controls="wallet">Using Wallet</label>
+                                            <input class="form-check-input" required="" type="radio" name="payment_mode" id="exampleRadios5"
+                                                value="wallet">
+                                            <label class="form-check-label" for="exampleRadios5" data-bs-toggle="collapse"
+                                                aria-controls="wallet">Using Wallet</label>
                                             <div class="form-group collapse in" id="wallet">
-                                                <p class="text-muted mt-5">
+                                                <p class="text-muted mt-5">Pay using your wallet.</p>
                                             </div>
                                         </div>
-                                        
-                                       
                                     </div>
                                 </div>
-
-
+                                
                                 <button type="submit" class="btn btn-fill-out btn-block mt-30">Place Order</button>
 
 
@@ -415,15 +403,14 @@
                    }
 
                     
-                   console.log("jkjkjkljlkjkljlkjkl",order.status,'kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk')
+                  
                     if (order.status) {
-                        console.log('enter the cash on deleivery');
+                       
 
-                        alert('enter cash on delivery')
+                        
                         location.href = '/orderSuccess'
                     } else if(order.status==false) {
-                        console.log(' razorpay payment functioncalling');
-
+                      
 
                        
                         razorpayPayment(order.order)
@@ -447,11 +434,7 @@
         //}
 
         function razorpayPayment(order) {
-            console.log(order);
-            console.log("?????????????");
-            console.log('enter the razorpay payment function `calling success full');
-            alert('enter razorpay payment function')
-
+            
             var options = {
                 "key": "rzp_test_FqE7lxwHbHUy8A", // Enter the Key ID generated from the Dashboard
                 "amount": order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
@@ -462,14 +445,11 @@
                 "order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
                 "handler": function (response) {
 
-                    console.log(response)
-                    alert('payment succesfull checking')
+                    
 
-                    alert(response.razorpay_payment_id);
-                    alert(response.razorpay_order_id);
-                    alert(response.razorpay_signature)
+                  
 
-                    alert('calling verifypayment')
+                   
                     verifyPayment(response.razorpay_payment_id, response.razorpay_order_id, response.razorpay_signature, order)
                 },
                 "prefill": {
@@ -487,14 +467,6 @@
 
 
 
-
-
-
-
-
-
-            console.log(options)
-            alert('out side of the options')
 
             var rzp1 = new Razorpay(options);
             rzp1.open();
@@ -520,10 +492,7 @@
 
         function verifyPayment(payment_id, order_id, signature, order) {
 
-            console.log('verifypayment ajax enterd')
-
-
-            alert('enter verify payment function')
+           
 
 
             $.ajax({
@@ -534,7 +503,7 @@
                 },
                 success: (response) => {
 
-                    console.log('kkkkkkkkkkkkkkkkkkkkkkkkkkkkkk')
+                   
                     location.href = '/orderSuccess'
                 }
 

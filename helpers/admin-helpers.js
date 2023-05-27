@@ -39,7 +39,7 @@ module.exports = {
           })
         } else {
           console.log('mission rejected')
-        }
+        } 
       })
     })
   },

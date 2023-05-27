@@ -1,4 +1,5 @@
-let userHelpers = require('../../helpers/user-helpers')
+// let userHelpers = require('../../helpers/user-helpers')
+let userHelpers = require('../../helpers/userHelper')
 let adminHelpers = require('../../helpers/admin-helpers')
 const { ObjectId } = require('mongodb')
 

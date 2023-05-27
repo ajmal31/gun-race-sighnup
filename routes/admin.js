@@ -1,7 +1,6 @@
 var express = require('express');
 const adminController = require('../controllers/admin-controller');
 var router = express.Router();
-let adminControllers=require('../controllers/admin-controller')
 let multer = require('../helpers/multer')
 const adminAuth=require('../auth/adminAuth')
 
@@ -9,41 +8,43 @@ const adminAuth=require('../auth/adminAuth')
 
 
 //GET LOGIN
-router.get('/login',adminControllers.getLogin)
+router.get('/login',adminController.getLogin)
 
 
 //POST LOGIN
-router.post('/adminLoginDetails',adminControllers.postLogin)
-//GET HOME
-router.get('/',adminControllers.getHome)
+router.post('/adminLoginDetails',adminController.postLogin)
+
 
 router.get('/logout',adminController.getLogout)
 
 router.use(adminAuth.adminAuthentication)
 
+//GET HOME
+router.get('/',adminController.getHome)
+
 //GET VIEW PRODUCTS
-router.get('/viewProducts',adminControllers.viewProducts)
+router.get('/viewProducts',adminController.viewProducts)
 
 //GET ADD_PRODUCTS
-router.get('/addProducts',adminControllers.getAddProducts)
+router.get('/addProducts',adminController.getAddProducts)
 
 //GET VIEW USERS
-router.get('/users',adminControllers.getAllUsers)
+router.get('/users',adminController.getAllUsers)
 
 //POST ADD PRODUCT
-router.post('/addProduct',multer.uploads.array('images', 4),adminControllers.postAddProducts)
+router.post('/addProduct',multer.uploads.array('images', 4),adminController.postAddProducts)
 
 //DELETE PRODUCT
-router.get('/deleteProduct/:id',adminControllers.deleteProduct)
+router.get('/deleteProduct/:id',adminController.deleteProduct)
 
 // GET EDIT PRODUCTS
-router.get('/editProduct/:id',adminControllers.getEditProduct)
+router.get('/editProduct/:id',adminController.getEditProduct)
 
 //POST EDITED DATA
-router.post('/updateProduct/:id',multer.uploads.array('images',4),adminControllers.postUpdateProduct)
+router.post('/updateProduct/:id',multer.uploads.array('images',4),adminController.postUpdateProduct)
 
 //USER BLOCKING
-router.get('/blockUser/:id',adminControllers.blockUser)
+router.get('/blockUser/:id',adminController.blockUser)
 
 //USER UNBLOCKING
 router.get('/unBlockUser/:id',adminController.unBlockUser)

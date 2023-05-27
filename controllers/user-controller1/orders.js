@@ -1,4 +1,5 @@
-let userHelpers = require('../../helpers/user-helpers')
+// let userHelpers = require('../../helpers/user-helpers')
+let userHelpers = require('../../helpers/userHelper')
 let adminHelpers = require('../../helpers/admin-helpers')
 const { ObjectId } = require('mongodb')
 
@@ -153,23 +154,23 @@ module.exports = {
 
 
     },
-    getAllOrders: (req, res) => {
+    // getAllOrders: (req, res) => {
 
-        let uid = req.session.userDetails._id
+    //     let uid = req.session.userDetails._id
 
-        userHelpers.getAllOrders(uid).then((allOrders) => {
+    //     userHelpers.getAllOrders(uid).then((allOrders) => {
 
-            if (allOrders) {
-                console.log('all orders')
-                console.log(allOrders);
-                console.log('order geting successfull');
-                let userdata = req.session.userDetails
-                res.render('user/orders', { userdata, allOrders })
-            }
+    //         if (allOrders) {
+    //             console.log('all orders')
+    //             console.log(allOrders);
+    //             console.log('order geting successfull');
+    //            let userdata = req.session.userDetails
+    //             res.render('user/orders', { userdata, allOrders })
+    //         }
 
 
-        })
-    },
+    //     })
+    // },
     getViewmore: (req, res) => {
 
         let id = req.params.id

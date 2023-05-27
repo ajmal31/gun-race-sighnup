@@ -1,4 +1,5 @@
-let userHelpers = require('../../helpers/user-helpers')
+// let userHelpers = require('../../helpers/user-helpers')
+let userHelpers = require('../../helpers/userHelper')
 let adminHelpers = require('../../helpers/admin-helpers')
 const { ObjectId } = require('mongodb')
 
@@ -30,5 +31,14 @@ module.exports={
           
   
       },
-  
+      removeProduct:(req,res)=>{
+          console.log('wihlist delete event reached controller');
+        let previousUrl=req.header('Referer')
+        let pid=req.params.id
+        let uid=req.session.userDetails._id
+        userHelpers.removeWishProduct(uid,pid).then((response)=>{
+
+           res.redirect(previousUrl)
+        })  
+      } 
 }

@@ -1,17 +1,24 @@
 <%- include('../layouts/user-header') %>
 
+   <% if (response.length===0) { %>
+    
+  
     <div class="container">
-        <!-- <div class="row">
+        <div class="row">
             <div class="col d-flex justify-content-center">
-                <img  src="/stylesheets/assets/imgs/emptywish.jpg" alt="" style="width: 750px;">               
+                <img  src="https://static.oxinis.com/healthmug/image/healthmug/empty-wishlist.webp" alt="" style="width: 750px;"> 
+                              
             </div>
-        </div> -->
-        <!-- <div class="row">
+        </div> 
+        <div class="row mt-0" >
             <div class="col d-flex justify-content-center">
-                <a href="/shop" class="btn btn-primary">Make a wish</a>
+                <a href="/getAllproducts" class="btn btn-primary">Make a wish</a>
             </div>
-        </div> -->
+        </div>
     </div>
+    <% }else{%>
+
+   
  
    
        
@@ -52,7 +59,7 @@
                                       
                                         <tr>
                                             <% let image=element.products.image[0] %>
-                                            <td class="image product-thumbnail"><img src="/images/<%= image %>" alt="#"></td>
+                                            <td class="image product-thumbnail"><a href="/productDetails/<%= element.pid %>"><img src="/images/<%= image %>" alt="#"></td></a>
                                             <td class="product-des product-name">
                                                 <h5 class="product-name"><a href="#"> <%= element.products.title %></a></h5>
                                                
@@ -79,7 +86,7 @@
                                             <td class="text-right" data-title="Cart">
                                                 <a class="btn btn-sm" href="/addToCart/<%= pid %>"><i class="fi-rs-shopping-bag mr-5"></i>Add to cart</a>
                                             </td>
-                                            <td class="action" data-title="Remove"><a href="#"><i class="fi-rs-trash"></i></a></td>
+                                            <td class="action" data-title="Remove"><a href="/removeWishProduct/<%= pid %>"><i class="fi-rs-trash"></i></a></td>
                                         </tr>
                                         <% }) %>
                                         
@@ -93,5 +100,5 @@
             </section>
         </main>
 
-
+        <% } %>
 <%- include('../layouts/user-footer') %>

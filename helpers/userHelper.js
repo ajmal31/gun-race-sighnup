@@ -8,7 +8,6 @@ const TWILIO_ACCOUNT_SID = process.env.accountSid
 const TWILIO_AUTH_TOKEN = process.env.auth
 const client = twilio(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN);
 const Razorpay = require('razorpay');
-const product = require('../controllers/user-controller1/product');
 
 
 var instance = new Razorpay({
@@ -129,8 +128,11 @@ module.exports = {
   },
 
   shop: (catName) => {
+    console.log("BRO");
     return new Promise((resolve, reject) => {
+     
       db.get().collection(collection.productCollection).find({ category: catName }).toArray().then((data) => {
+        console.log(data)
         resolve(data)
       })
     })
@@ -885,30 +887,103 @@ module.exports = {
       })
     })
   },
-  getCartTotal:(uid)=>{
+//   getCartTotal:(uid)=>{
+
+//     return new Promise(async(resolve,reject)=>{
+
+//       const monthlyRevenue = await db.get().collection(collection.cartCollection).aggregate([
+//         {
+//           $match: { userId: ObjectId(uid) }
+//         },
+//         {
+//           $unwind: '$productList'
+//         },
+//         {
+//           $project: {
+//             userId: '$userId',
+//             pid: '$productList.pid',
+//             quantity: '$productList.quantity',
+//           },
+//         },
+//         {
+//           $lookup: {
+//             from: collection.productCollection,
+//             localField: 'pid',
+//             foreignField: '_id',
+//             as: 'products'
+//           }
+//         },
+//         {
+//           $project: {
+//             quantity: 1,
+//             productprice: {
+//               $cond: {
+//                 if: {
+//                   $and: [
+//                     { $gt: [{ $size: '$products' }, 0] },
+//                     { $lte: ['$products.offerExpire', new Date()] }
+//                   ]
+//                 },
+//                 then: {
+//                   $cond: {
+//                     if: { $and: [{ $isArray: '$products.offerprice' }, { $gt: [{ $size: '$products.offerprice' }, 0] }] },
+//                     then: { $arrayElemAt: ['$products.offerprice', 0] },
+//                     else: { $arrayElemAt: ['$products.price', 0] }
+//                   }
+//                 },
+//                 else: { $arrayElemAt: ['$products.price', 0] }
+//               }
+//             }
+//           }
+//         },
+//         {
+//           $group: {
+//             _id: null,
+//             subtotal: { $sum: { $multiply: ['$quantity', '$productprice'] } }
+//           }
+//         },
+//         {
+//           $project: {
+//             cartTotal: { $sum: '$subtotal' }
+//           }
+//         }
+//       ]).toArray();
+//        console.log('filter cart total', monthlyRevenue);      
+//       resolve(monthlyRevenue);
+//     });
+//  },
+
+      
+
+
+ //******* */
+      getCartTotal:(uid)=>{
 
     return new Promise(async(resolve,reject)=>{
 
-      const monthlyRevenue = await db.get().collection(collection.cartCollection).aggregate([
+      const monthlyRevenue = await db
+      .get()
+      .collection(collection.cartCollection)
+      .aggregate([
         {
           $match: { userId: ObjectId(uid) }
         },
         {
-          $unwind: '$productList'
+          $unwind: "$productList"
         },
         {
           $project: {
-            userId: '$userId',
-            pid: '$productList.pid',
-            quantity: '$productList.quantity',
-          },
+            userId: "$userId",
+            pid: "$productList.pid",
+            quantity: "$productList.quantity"
+          }
         },
         {
           $lookup: {
             from: collection.productCollection,
-            localField: 'pid',
-            foreignField: '_id',
-            as: 'products'
+            localField: "pid",
+            foreignField: "_id",
+            as: "products"
           }
         },
         {
@@ -918,18 +993,33 @@ module.exports = {
               $cond: {
                 if: {
                   $and: [
-                    { $gt: [{ $size: '$products' }, 0] },
-                    { $lte: ['$products.offerExpire', new Date()] }
+                    { $gt: [{ $size: "$products" }, 0] },
+                    {
+                      $lt: [
+                        {
+                          $dateToString: {
+                            date: new Date(),
+                            format: "%Y-%m-%d"
+                          }
+                        },
+                        { $arrayElemAt: ["$products.offerExpire", 0] }
+                      ]
+                    }
                   ]
                 },
                 then: {
                   $cond: {
-                    if: { $and: [{ $isArray: '$products.offerprice' }, { $gt: [{ $size: '$products.offerprice' }, 0] }] },
-                    then: { $arrayElemAt: ['$products.offerprice', 0] },
-                    else: { $arrayElemAt: ['$products.price', 0] }
+                    if: {
+                      $and: [
+                        { $isArray: "$products.offerprice" },
+                        { $gt: [{ $size: "$products.offerprice" }, 0] }
+                      ]
+                    },
+                    then: { $arrayElemAt: ["$products.offerprice", 0] },
+                    else: { $arrayElemAt: ["$products.price", 0] }
                   }
                 },
-                else: { $arrayElemAt: ['$products.price', 0] }
+                else: { $arrayElemAt: ["$products.price", 0] }
               }
             }
           }
@@ -937,23 +1027,24 @@ module.exports = {
         {
           $group: {
             _id: null,
-            subtotal: { $sum: { $multiply: ['$quantity', '$productprice'] } }
+            subtotal: { $sum: { $multiply: ["$quantity", "$productprice"] } }
           }
         },
         {
           $project: {
-            cartTotal: { $sum: '$subtotal' }
+            cartTotal: { $sum: "$subtotal" }
           }
         }
-      ]).toArray();
-       console.log('filter cart total', monthlyRevenue);      
-      resolve(monthlyRevenue);
-      
-      
-      
-    })
-  },
-
+      ])
+      .toArray();
+    
+    console.log("filter cart total", monthlyRevenue);
+    resolve(monthlyRevenue);
+    
+    });
+ },
+//******** */
+  
 
 
   getEachProductTotal: (uid) => {
@@ -1005,6 +1096,36 @@ module.exports = {
       })
     })
   },
+
+
+  removeWishProduct:(uid,pid)=>{
+
+    return new Promise((resolve,reject)=>{
+
+      db.get().collection(collection.wishlistCollection).deleteOne({userId:ObjectId(uid)},{$pull:{productList:{pid:ObjectId(pid)}}}).then((Response)=>{
+
+        if(Response){
+          console.log('product  remove ,succesfulll');
+          resolve(Response)
+        }
+      })
+    })
+  },
+  removeUser:(uid)=>{
+    return new Promise((resolve,reject)=>{
+
+      db.get().collection(collection.userCollection).deleteOne({_id:ObjectId(uid)}).then((response)=>{
+
+        if(response)
+        {
+          console.log('user remove succesfull........................................................................................');
+          resolve(response)
+        }
+      })
+    })
+  },
+    
+
 
 
 

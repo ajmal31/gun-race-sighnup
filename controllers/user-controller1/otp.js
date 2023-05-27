@@ -1,5 +1,5 @@
-let userHelpers = require('../../helpers/user-helpers')
-
+// let userHelpers = require('../../helpers/user-helpers')
+let userHelpers = require('../../helpers/userHelper')
 
 
 module.exports={
