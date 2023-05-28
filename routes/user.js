@@ -143,6 +143,9 @@ router.get('/removeWishProduct/:id',auth.userAuthentication,wishlist.removeProdu
 
 //REMOVE USER
 router.get('/removeUser/:id',auth.userAuthentication,users.removeUser)
+
+//CONTACT
+router.get('/contact',users.contact)
 // router.get('/test-home',(req,res)=>{
 //     adminHelpers.getAllCategories().then((data)=>{
 //         let userdata=req.session.userDetails
